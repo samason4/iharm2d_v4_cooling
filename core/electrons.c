@@ -65,18 +65,6 @@ inline void heat_electrons_1zone(struct GridGeom *G, struct FluidState *Ss, stru
   for (int idx = KEL0; idx < NVAR ; idx++) {
     double fel = get_fels(G, Ss, i, j, idx);
     Sf->P[idx][j][i] += (game-1.)/(gam-1.)*pow(Ss->P[RHO][j][i],gam-game)*fel*(kHarm - Sf->P[KTOT][j][i]);
-//*****************************************************************************************************************************************
-//    double uel = 1./(game-1.)*Ss->P[idx][j][i]*pow(Ss->P[RHO][j][i],game);//taken from KAWAZURA
-//    double Tel = (game-1.)*uel/Ss->P[RHO][j][i];// I'm assumeing that Tel(which I took from KAWAZURA) is the electron temperature.
-//    double Theta_electrons = Tel/5.92986e9;
-//    double p_cool = (game-1)*uel;
-//    double bsq = bsq_calc(Ss, i, j);
-//    double ne = p_cool/Tel/1.380649e-16;
-//    double drho;
-//    double Du = 1.28567e-14*ne*pow(bsq,2)*pow(Theta_electrons,2);//idk about using ne or B with this
-//    Sf->P[UU][j][i] += Du;
-//    Sf->P[idx][j][i] += (Du/Ss->P[RHO][j][i]-(p_cool+Ss->P[UU][j][i])/pow(Ss->P[RHO][j][i],2)*drho)/Tel;
-//*****************************************************************************************************************************************
   }
 
   // Reset total entropy
