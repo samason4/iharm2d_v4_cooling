@@ -225,9 +225,9 @@ void init(struct GridGeom *G, struct FluidState *S)
     /*S->P[B1][j][i] = -(A[i][j] - A[i][j + 1] + A[i + 1][j] - A[i + 1][j + 1]) / (2. * dx[2] * G->gdet[CENT][j][i]);
     S->P[B2][j][i] = (A[i][j] + A[i][j + 1] - A[i + 1][j] - A[i + 1][j + 1]) / (2. * dx[1] * G->gdet[CENT][j][i]);
     S->P[B3][j][i] = 0.;*/
-    S->P[B1][j][i] = 0.;//this is where I have set the initial magnetic field to zero
-    S->P[B2][j][i] = 0.;
-    S->P[B3][j][i] = 0.;
+    S->P[B1][j][i] = 1e-15;//this is where I have set the initial magnetic field to zero
+    S->P[B2][j][i] = 1e-15;
+    S->P[B3][j][i] = 1e-15;
 
     get_state(G, S, i, j, CENT);
     double bsq_ij = bsq_calc(S, i, j);
