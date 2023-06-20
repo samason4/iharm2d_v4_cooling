@@ -24,7 +24,6 @@
 [dbl] fel0 = 0.01
 [dbl] tptemin = 0.001
 [dbl] tptemax = 1000.0
-[dbl] Munit = 1 // IDK what is an appropriate Munit to put for now
 
 # PROBLEM
 [dbl] rin = 6.0
