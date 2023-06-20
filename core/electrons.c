@@ -89,9 +89,9 @@ inline void heat_electrons_1zone(struct GridGeom *G, struct FluidState *Ss, stru
     bl_coord(X, &r, &th);
     blgset(i, j, &blgeom);
 
-    ucon[1] = Ss->P[U1][j][i];
-    ucon[2] = Ss->P[U2][j][i];
-    ucon[3] = Ss->P[U3][j][i];
+    ucon[1] = Sf->P[U1][j][i];
+    ucon[2] = Sf->P[U2][j][i];
+    ucon[3] = Sf->P[U3][j][i];
 
     AA = blgeom.gcov[0][0];
     BB = 2.*(blgeom.gcov[0][1]*ucon[1] +
