@@ -75,6 +75,19 @@ inline void heat_electrons_1zone(struct GridGeom *G, struct FluidState *Ss, stru
 //    double Du = 1.28567e-14*ne*pow(bsq,2)*pow(Theta_electrons,2);//idk about using ne or B with this
 //    Sf->P[UU][j][i] += Du;
 //    Sf->P[idx][j][i] += (Du/Ss->P[RHO][j][i]-(p_cool+Ss->P[UU][j][i])/pow(Ss->P[RHO][j][i],2)*drho)/Tel;
+    double Lunit = 6.67430e-8*MBH/pow(29979245800,2);
+    double Tunit = 6.67430e-8*MBH/pow(29979245800,2);
+    double ut = ucon[0]*Tunit;
+    double uel = Ss->P[UU][j][i]*Munit*pow(Lunit,2)/pow(Tunit,2);
+    double X[NDIM];
+    coord(i, j, CENT, X);
+    double r, th;
+    bl_coord(X, &r, &th);
+    r = r*Lunit;
+    double m = 3.;
+    double alpha = pow(r,-3/2)*m/ut;
+    uel = uel*exp(-t/alpha);
+    Sf->P[UU][j][i] = uel/(Munit*pow(Lunit,2)/pow(Tunit,2));
   }
 
   // Reset total entropy
