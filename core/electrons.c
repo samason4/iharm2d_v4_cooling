@@ -9,6 +9,7 @@
 
 #include "decs.h"
 #include "bl_coord.h"
+#include "bl_coord.c"
 
 #if ELECTRONS
 
