@@ -300,7 +300,7 @@ extern int nthreads;
 #define ME (9.1093826e-28  ) // Electron mass
 #define MP (1.67262171e-24 ) // Proton mass
 #define MBH (8.26e39) // Mass of the black hole
-#defien Munit (1) // Munit for code<->CGS conversion
+#define Munit (1) // Munit for code<->CGS conversion
 extern double game, gamp;
 extern double fel0;
 extern double tptemin, tptemax;
