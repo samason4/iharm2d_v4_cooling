@@ -89,9 +89,9 @@ inline void heat_electrons_1zone(struct GridGeom *G, struct FluidState *Ss, stru
     bl_coord(X, &r, &th);
     blgset(i, j, &blgeom);
 
-    ucon[1] = S->P[U1][j][i];
-    ucon[2] = S->P[U2][j][i];
-    ucon[3] = S->P[U3][j][i];
+    ucon[1] = Ss->P[U1][j][i];
+    ucon[2] = Ss->P[U2][j][i];
+    ucon[3] = Ss->P[U3][j][i];
 
     AA = blgeom.gcov[0][0];
     BB = 2.*(blgeom.gcov[0][1]*ucon[1] +
@@ -112,14 +112,10 @@ inline void heat_electrons_1zone(struct GridGeom *G, struct FluidState *Ss, stru
     double Tunit = 6.67430e-8*MBH/pow(29979245800,2);
     double ut = ucon[0]*Tunit;
     double uel = Ss->P[UU][j][i]*Munit*pow(Lunit,2)/pow(Tunit,2);
-    double X[NDIM];
-    coord(i, j, CENT, X);
-    double r, th;
-    bl_coord(X, &r, &th);
     r = r*Lunit;
     double m = 3.;
-    double alpha = pow(r,-3/2)*m/ut;
-    uel = uel*exp(-t/alpha);
+    double alpha1 = pow(r,-3/2)*m/ut;
+    uel = uel*exp(-t/alpha1);
     Sf->P[UU][j][i] = uel/(Munit*pow(Lunit,2)/pow(Tunit,2));
   }
 
