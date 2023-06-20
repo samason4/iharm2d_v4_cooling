@@ -308,9 +308,9 @@ inline void get_fluid_source(struct GridGeom *G, struct FluidState *S, GridPrim 
 // Returns b.b (twice magnetic pressure)
 inline double bsq_calc(struct FluidState *S, int i, int j)
 {
-  double bsq = 0.;//in this function the two commented out lines are lines that I commented out so that bsq would equal zero
-//  DLOOP1
-//    bsq += S->bcon[mu][j][i]*S->bcov[mu][j][i];
+//double bsq = 0.;//in this function the two commented out lines are lines that I commented out so that bsq would equal zero
+  DLOOP1
+    bsq += S->bcon[mu][j][i]*S->bcov[mu][j][i];
   
   return bsq;
 }
