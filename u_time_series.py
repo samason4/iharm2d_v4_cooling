@@ -34,6 +34,36 @@ def plotting(dumpno):
 	n1 = int(firstline[11])
 	n2 = int(firstline[12])
 
+# if electron heating was enabled
+	if len(firstline) > 38:
+		gam = float(firstline[20])
+		dx1 = float(firstline[25])
+		dx2 = float(firstline[26])
+		ndim = int(firstline[27])
+		if metric == 'FMKS':
+			rEH = float(firstline[33])
+			a = float(firstline[36])
+			t = float(firstline[37])
+		elif metric == 'MKS':
+			rEH = float(firstline[30])
+			a = float(firstline[33])
+			t = float(firstline[34])
+
+	# if electron heating was not enabled
+	else:
+		gam = float(firstline[15])
+		dx1 = float(firstline[20])
+		dx2 = float(firstline[21])
+		ndim = int(firstline[22])	
+		if metric == 'FMKS':
+			rEH = float(firstline[28])
+			a = float(firstline[31])
+			t = float(firstline[32])
+		elif metric == 'MKS':
+			rEH = float(firstline[25])
+			a = float(firstline[28])
+			t = float(firstline[29])
+
 	t = '{:.3f}'.format(t)
 	
 	# loading prims
