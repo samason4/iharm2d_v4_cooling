@@ -30,7 +30,9 @@ def plotting(dumpno):
 
 	madtype = int(firstline[0])
 	rin = float(firstline[2])	
-	rmax = float(firstline[3])
+	rmax = float(firstline[3])	
+	electrons = float(firstline[7])
+	metric = firstline[9]
 	n1 = int(firstline[11])
 	n2 = int(firstline[12])
 
