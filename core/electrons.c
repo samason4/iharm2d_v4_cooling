@@ -111,14 +111,14 @@ inline void heat_electrons_1zone(struct GridGeom *G, struct FluidState *Ss, stru
     double Lunit = 6.67430e-8*MBH/pow(29979245800,2);
     double Tunit = 6.67430e-8*MBH/pow(29979245800,2);
     double ut = ucon[0]*Tunit;
-    double uel = Sf->P[UU][j][i]*Munit*pow(Lunit,2)/pow(Tunit,2);
+    double uel = fel*Sf->P[UU][j][i]*Munit*pow(Lunit,2)/pow(Tunit,2);
     r = r*Lunit;
     double m = 3.;
     double alpha1 = pow(r,-3/2)*m/ut;
     uel = uel*exp(-t/alpha1);
-    //Ss->P[UU][j][i] = uel/(Munit*pow(Lunit,2)/pow(Tunit,2));
-    printf("Ss: %lf,", Ss->P[UU][j][i]);
-    printf("Sf: %lf\n", Sf->P[UU][j][i]);
+    Ss->P[UU][j][i] += uel/(Munit*pow(Lunit,2)/pow(Tunit,2));
+    //printf("Ss: %lf,", Ss->P[UU][j][i]);
+    //printf("Sf: %lf\n", Sf->P[UU][j][i]);
   }
 
   // Reset total entropy
