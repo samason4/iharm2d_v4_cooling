@@ -72,13 +72,14 @@ def plotting(dumpno):
 	prims = np.loadtxt(os.path.join(dumpsdir,'dump_0000{0:04d}'.format(dumpno)),skiprows=1)
 	u = prims[:,1].reshape((n1,n2))
 	max = np.argmax(u, axis=0, out = None)
-	index1 = 0
-	for i in range(n2):
-		if(max > n1):
-			index1 += 1
-			max -= n1
-	u_max = u[index1][max]
-	print(umax)
+	print(max)
+	#index1 = 0
+	#for i in range(n2):
+	#	if(max > n1):
+	#		index1 += 1
+	#		max -= n1
+	#u_max = u[index1][max]
+	#print(umax)
 if __name__=="__main__":
 	dstart = int(sorted(glob.glob(os.path.join(dumpsdir,'dump*')))[0][-4:])
 	dend = int(sorted(glob.glob(os.path.join(dumpsdir,'dump*')))[-1][-4:])
