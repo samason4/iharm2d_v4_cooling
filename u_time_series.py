@@ -71,8 +71,7 @@ def plotting(dumpno):
 	# loading prims
 	prims = np.loadtxt(os.path.join(dumpsdir,'dump_0000{0:04d}'.format(dumpno)),skiprows=1)
 	u = prims[:,1].reshape((n1,n2))
-	maxarr = np.argmax(u, axis=None)
-	max = maxarr[0]
+	max = np.argmax(u, axis=None)
 	print(max)
 	index1 = 0
 	for i in range(n2):
