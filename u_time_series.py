@@ -47,3 +47,12 @@ def plotting(dumpno):
 			max -= n1
 	u_max = u[index1][max]
 	print(umax)
+if __name__=="__main__":
+	dstart = int(sorted(glob.glob(os.path.join(dumpsdir,'dump*')))[0][-4:])
+	dend = int(sorted(glob.glob(os.path.join(dumpsdir,'dump*')))[-1][-4:])
+	dlist = range(dstart,dend+1)
+
+	ncores = psutil.cpu_count(logical=True)
+	pad = 0.5
+	nthreads = int(ncores*pad)
+	run_parallel(plotting,dlist,nthreads)
