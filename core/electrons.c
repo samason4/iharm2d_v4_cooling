@@ -52,6 +52,7 @@ void heat_electrons(struct GridGeom *G, struct FluidState *Ss, struct FluidState
 #pragma omp parallel for collapse(2)
   ZLOOP {
     heat_electrons_1zone(G, Ss, Sf, i, j);
+		cool_electrons(G, Ss, Sf, i, j);
   }
 
   timer_stop(TIMER_ELECTRON_HEAT);
@@ -66,59 +67,6 @@ inline void heat_electrons_1zone(struct GridGeom *G, struct FluidState *Ss, stru
   for (int idx = KEL0; idx < NVAR ; idx++) {
     double fel = get_fels(G, Ss, i, j, idx);
     Sf->P[idx][j][i] += (game-1.)/(gam-1.)*pow(Ss->P[RHO][j][i],gam-game)*fel*(kHarm - Sf->P[KTOT][j][i]);
-//    double uel = 1./(game-1.)*Ss->P[idx][j][i]*pow(Ss->P[RHO][j][i],game);//taken from KAWAZURA
-//    double Tel = (game-1.)*uel/Ss->P[RHO][j][i];// I'm assumeing that Tel(which I took from KAWAZURA) is the electron temperature.
-//    double Theta_electrons = Tel/5.92986e9;
-//    double p_cool = (game-1)*uel;
-//    double bsq = bsq_calc(Ss, i, j);
-//    double ne = p_cool/Tel/1.380649e-16;
-//    double drho;
-//    double Du = 1.28567e-14*ne*pow(bsq,2)*pow(Theta_electrons,2);//idk about using ne or B with this
-//    Sf->P[UU][j][i] += Du;
-//    Sf->P[idx][j][i] += (Du/Ss->P[RHO][j][i]-(p_cool+Ss->P[UU][j][i])/pow(Ss->P[RHO][j][i],2)*drho)/Tel;
-
-//-----------------------------------------------------------------------------------
-//everything in the ------'s is taken from bl_coord.c so that I can access ucon[0]
-    double X[NDIM], r, th, ucon[NDIM], trans[NDIM][NDIM], tmp[NDIM];
-    double AA, BB, CC, discr;
-    double alpha, gamma, beta[NDIM];
-    struct blgeom;
-    struct of_geom blgeom;
-
-    coord(i, j, CENT, X);
-    bl_coord(X, &r, &th);
-    blgset(i, j, &blgeom);
-
-    ucon[1] = Sf->P[U1][j][i];
-    ucon[2] = Sf->P[U2][j][i];
-    ucon[3] = Sf->P[U3][j][i];
-
-    AA = blgeom.gcov[0][0];
-    BB = 2.*(blgeom.gcov[0][1]*ucon[1] +
-             blgeom.gcov[0][2]*ucon[2] +
-             blgeom.gcov[0][3]*ucon[3]);
-    CC = 1. +
-        blgeom.gcov[1][1]*ucon[1]*ucon[1] +
-        blgeom.gcov[2][2]*ucon[2]*ucon[2] +
-        blgeom.gcov[3][3]*ucon[3]*ucon[3] +
-        2.*(blgeom.gcov[1][2]*ucon[1]*ucon[2] +
-            blgeom.gcov[1][3]*ucon[1]*ucon[3] +
-            blgeom.gcov[2][3]*ucon[2]*ucon[3]);
-
-    discr = BB*BB - 4.*AA*CC;
-    ucon[0] = (-BB - sqrt(discr))/(2.*AA);
-//----------------------------------------------------------------------------
-    double Lunit = 6.67430e-8*MBH/pow(29979245800,2);
-    double Tunit = 6.67430e-8*MBH/pow(29979245800,2);
-    double ut = ucon[0]*Tunit;
-    double uel = Sf->P[UU][j][i]*Munit*pow(Lunit,2)/pow(Tunit,2);
-    r = r*Lunit;
-    double m = 3.;
-    double alpha1 = pow(r,-3/2)*m/ut;
-    uel = uel*exp(-t/alpha1);
-    Sf->P[UU][j][i] += uel/(Munit*pow(Lunit,2)/pow(Tunit,2));
-    //printf("Ss: %lf,", Ss->P[UU][j][i]);
-    //printf("Sf: %lf\n", Sf->P[UU][j][i]);
   }
 
   // Reset total entropy
@@ -203,5 +151,61 @@ inline void fixup_electrons_1zone(struct FluidState *S, int i, int j)
 	// Enforce minimum Tp/Te
     S->P[idx][j][i] = MY_MIN(S->P[idx][j][i], kelmax);
   }
+}
+inline void cool_electrons(struct GridGeom *G, struct FluidState *Ss, struct FluidState *Sf, int i, int j)
+{
+//    double uel = 1./(game-1.)*Ss->P[idx][j][i]*pow(Ss->P[RHO][j][i],game);//taken from KAWAZURA
+//    double Tel = (game-1.)*uel/Ss->P[RHO][j][i];// I'm assumeing that Tel(which I took from KAWAZURA) is the electron temperature.
+//    double Theta_electrons = Tel/5.92986e9;
+//    double p_cool = (game-1)*uel;
+//    double bsq = bsq_calc(Ss, i, j);
+//    double ne = p_cool/Tel/1.380649e-16;
+//    double drho;
+//    double Du = 1.28567e-14*ne*pow(bsq,2)*pow(Theta_electrons,2);//idk about using ne or B with this
+//    Sf->P[UU][j][i] += Du;
+//    Sf->P[idx][j][i] += (Du/Ss->P[RHO][j][i]-(p_cool+Ss->P[UU][j][i])/pow(Ss->P[RHO][j][i],2)*drho)/Tel;
+
+//-----------------------------------------------------------------------------------
+//everything in the ------'s is taken from bl_coord.c so that I can access ucon[0]
+  double X[NDIM], r, th, ucon[NDIM], trans[NDIM][NDIM], tmp[NDIM];
+  double AA, BB, CC, discr;
+  double alpha, gamma, beta[NDIM];
+  struct blgeom;
+  struct of_geom blgeom;
+
+  coord(i, j, CENT, X);
+  bl_coord(X, &r, &th);
+  blgset(i, j, &blgeom);
+
+  ucon[1] = Sf->P[U1][j][i];
+  ucon[2] = Sf->P[U2][j][i];
+  ucon[3] = Sf->P[U3][j][i];
+
+  AA = blgeom.gcov[0][0];
+  BB = 2.*(blgeom.gcov[0][1]*ucon[1] +
+           blgeom.gcov[0][2]*ucon[2] +
+           blgeom.gcov[0][3]*ucon[3]);
+  CC = 1. +
+      blgeom.gcov[1][1]*ucon[1]*ucon[1] +
+      blgeom.gcov[2][2]*ucon[2]*ucon[2] +
+      blgeom.gcov[3][3]*ucon[3]*ucon[3] +
+      2.*(blgeom.gcov[1][2]*ucon[1]*ucon[2] +
+          blgeom.gcov[1][3]*ucon[1]*ucon[3] +
+          blgeom.gcov[2][3]*ucon[2]*ucon[3]);
+
+  discr = BB*BB - 4.*AA*CC;
+  ucon[0] = (-BB - sqrt(discr))/(2.*AA);
+//----------------------------------------------------------------------------
+  double Lunit = 6.67430e-8*MBH/pow(29979245800,2);
+  double Tunit = 6.67430e-8*MBH/pow(29979245800,2);
+  double ut = ucon[0]*Tunit;
+  double uel = Sf->P[UU][j][i]*Munit*pow(Lunit,2)/pow(Tunit,2);
+  r = r*Lunit;
+  double m = 3.;
+  double alpha1 = pow(r,-3/2)*m/ut;
+  uel = uel*exp(-t/alpha1);
+  Sf->P[UU][j][i] = uel/(Munit*pow(Lunit,2)/pow(Tunit,2));
+  //printf("Ss: %lf,", Ss->P[UU][j][i]);
+  //printf("Sf: %lf\n", Sf->P[UU][j][i]);
 }
 #endif // ELECTRONS
