@@ -78,7 +78,7 @@ def plotting(dumpno):
 			index1 += 1
 			max -= n1
 	u_max = u[index1][max]
-	print(u_max)
+	print(t, u_max)
 if __name__=="__main__":
 	dstart = int(sorted(glob.glob(os.path.join(dumpsdir,'dump*')))[0][-4:])
 	dend = int(sorted(glob.glob(os.path.join(dumpsdir,'dump*')))[-1][-4:])
