@@ -49,12 +49,12 @@ def plotting(dumpno):
 	# loading prims
 	prims = np.loadtxt(os.path.join(dumpsdir,'dump_0000{0:04d}'.format(dumpno)),skiprows=1)
 	u = prims[:,1].reshape((n1,n2))
-  	max = np.argmax(u, axis=0, out = none)
-  	index1 = 0
-  	for i in range(n2):
-    	if(max > n1):
-   	   index1++
-    	   max -= n1
-  	u_max = u[index1][max]
-  	print(umax)
+	max = np.argmax(u, axis=0, out = none)
+	index1 = 0
+	for i in range(n2):
+		if(max > n1):
+			index1++
+			max -= n1
+	u_max = u[index1][max]
+	print(umax)
 	
