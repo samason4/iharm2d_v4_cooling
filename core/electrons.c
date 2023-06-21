@@ -116,8 +116,8 @@ inline void heat_electrons_1zone(struct GridGeom *G, struct FluidState *Ss, stru
     double m = 3.;
     double alpha1 = pow(r,-3/2)*m/ut;
     uel = uel*exp(-t/alpha1);
-    Sf->P[UU][j][i] = uel/(Munit*pow(Lunit,2)/pow(Tunit,2));
-    printf("%lf/n", uel);
+    Ss->P[UU][j][i] = uel/(Munit*pow(Lunit,2)/pow(Tunit,2));
+    printf("%lf\n", Ss->P[UU][j][i]);
   }
 
   // Reset total entropy
