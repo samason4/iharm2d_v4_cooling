@@ -37,56 +37,24 @@ def plotting(dumpno):
 	firstline = header.readline()
 	header.close()
 	firstline = firstline.split()
-	
+
 	madtype = int(firstline[0])
 	rin = float(firstline[2])	
-	rmax = float(firstline[3])	
-	electrons = float(firstline[7])
-	metric = firstline[9]
+	rmax = float(firstline[3])
 	n1 = int(firstline[11])
 	n2 = int(firstline[12])
-	
-	# if electron heating was enabled
-	if len(firstline) > 38:
-		gam = float(firstline[20])
-		dx1 = float(firstline[25])
-		dx2 = float(firstline[26])
-		ndim = int(firstline[27])
-		if metric == 'FMKS':
-			rEH = float(firstline[33])
-			a = float(firstline[36])
-			t = float(firstline[37])
-		elif metric == 'MKS':
-			rEH = float(firstline[30])
-			a = float(firstline[33])
-			t = float(firstline[34])
-
-	# if electron heating was not enabled
-	else:
-		gam = float(firstline[15])
-		dx1 = float(firstline[20])
-		dx2 = float(firstline[21])
-		ndim = int(firstline[22])	
-		if metric == 'FMKS':
-			rEH = float(firstline[28])
-			a = float(firstline[31])
-			t = float(firstline[32])
-		elif metric == 'MKS':
-			rEH = float(firstline[25])
-			a = float(firstline[28])
-			t = float(firstline[29])
 
 	t = '{:.3f}'.format(t)
 	
 	# loading prims
 	prims = np.loadtxt(os.path.join(dumpsdir,'dump_0000{0:04d}'.format(dumpno)),skiprows=1)
 	u = prims[:,1].reshape((n1,n2))
-  max = np.argmax(u, axis=0, out = none)
-  index1 = 0
-  for i in range(n2):
-    if(max > n1):
-      index1++
-      max -= n1
-  u_max = u[index1][max]
-  print(umax)
+  	max = np.argmax(u, axis=0, out = none)
+  	index1 = 0
+  	for i in range(n2):
+    	if(max > n1):
+   	   index1++
+    	   max -= n1
+  	u_max = u[index1][max]
+  	print(umax)
 	
