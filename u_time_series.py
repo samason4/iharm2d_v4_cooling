@@ -6,13 +6,13 @@ import matplotlib.pyplot as plt
 from matplotlib import gridspec
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 import multiprocessing as mp
-"""
+
 # paths
 dumpsdir = sys.argv[1]
 outputdir = sys.argv[2]
 if not os.path.exists(outputdir):
 	os.makedirs(outputdir)
-"""
+
 # function to parallelize plotting
 def run_parallel(function, dlist,	nthreads):
 	pool = mp.Pool(nthreads)
