@@ -53,7 +53,7 @@ def plotting(dumpno):
 	index1 = 0
 	for i in range(n2):
 		if(max > n1):
-			index1++
+			index1 += 1
 			max -= n1
 	u_max = u[index1][max]
 	print(umax)
