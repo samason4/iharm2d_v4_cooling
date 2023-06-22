@@ -70,6 +70,6 @@ tarr = []
 for i in range(201): 
 	plotting(i, uarr, tarr)
 plt.plot(tarr, uarr, 'b')
-plt.xticks(range(0, 200, 10))
+plt.xticks(range(0, 200, 50))
 plt.savefig(os.path.join(outputdir,'internal_energy_vs_time'))
 plt.close()
