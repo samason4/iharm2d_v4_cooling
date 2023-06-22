@@ -94,7 +94,7 @@ def find_indices(min_r, min_th):
 	minarr_th = np.argmin(th, axis=1)
 	min_th = minarr_th[min_r]
 
-actual plotting:
+#actual plotting:
 uarr = []
 tarr = []
 min_r = 0.0
