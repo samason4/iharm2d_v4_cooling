@@ -13,7 +13,7 @@ outputdir = sys.argv[2]
 if not os.path.exists(outputdir):
 	os.makedirs(outputdir)
 
-def plotting(dumpno):	
+def plotting(dumpno, u, min_r, min_th, t):	
 	
 	# header info
 	header = open(os.path.join(dumpsdir,'dump_0000{0:04d}'.format(dumpno)),'r')
@@ -63,5 +63,15 @@ def plotting(dumpno):
 	prims = np.loadtxt(os.path.join(dumpsdir,'dump_0000{0:04d}'.format(dumpno)),skiprows=1)
 	u = prims[:,1].reshape((n1,n2))
 
-#actually call the function:
-plotting(0000)
+#actually plotting:
+uarr = []
+tarr = []
+for i in range(1000): 
+	u = np.zeros(n1,n2)
+	min_r = 0.0
+	min_th = 0.0
+	t = 0.0
+	plotting(i, u, min_r, min_th, t)
+	uarr.append(u[min_r][min_th])
+	tarr.append(t)
+plt.plot(tarr, uarr, 'b')
