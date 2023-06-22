@@ -83,16 +83,6 @@ def find_indices():
 	th = grid[:,3].reshape((n1,n2))
 
 	#find the right indices
-	"""for i in range(n1):
-		for j in range(n2):
-			r[i][j] -= 12
-			r[i][j] = abs(r[i][j])
-			th[i][j] -= np.pi/2
-			th[i][j] = abs(th[i][j])
-	minarr_r = np.argmin(r, axis=0)
-	min_r = minarr_r[0]
-	minarr_th = np.argmin(th, axis=1)
-	min_th = minarr_th[min_r]"""
 	min_r  = np.argmin(np.fabs(r[:,0] - 12))
 	min_th = np.argmin(np.fabs(th[min_r,:] - np.pi/2))
 	return [min_r, min_th]
