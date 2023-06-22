@@ -206,7 +206,7 @@ inline void cool_electrons_1zone(struct GridGeom *G, struct FluidState *Ss, stru
 	
   // Evolve model entropy(ies)
   for (int idx = KEL0; idx < NVAR ; idx++) {
-    entropy_el = Sf->P[idx][j][i];
+    double entropy_el = Sf->P[idx][j][i];
     double uel = pow(Sf->P[RHO][j][i], game)*exp(entropy_el*(game-1));//wasn't sure how to add in the electron mass or boltzmann's constant so I left them out for now
     uel = uel*Munit*pow(Lunit,2)/pow(Tunit,2);
     uel += -1*alpha1*uel*dt;
