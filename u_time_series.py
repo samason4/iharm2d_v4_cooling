@@ -13,7 +13,7 @@ outputdir = sys.argv[2]
 if not os.path.exists(outputdir):
 	os.makedirs(outputdir)
 
-def plotting(dumpno, u, min_r, min_th, t):	
+def plotting(dumpno, uarr, tarr):	
 	
 	# header info
 	header = open(os.path.join(dumpsdir,'dump_0000{0:04d}'.format(dumpno)),'r')
