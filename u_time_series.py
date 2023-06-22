@@ -98,7 +98,7 @@ def find_indices():
 #actual plotting:
 uarr = []
 tarr = []
-mins = find_indices(min_r, min_th)
+mins = find_indices()
 min_r = mins[0]
 min_th = mins[1]
 print(mins)
