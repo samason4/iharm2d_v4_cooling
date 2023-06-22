@@ -57,7 +57,7 @@ def plotting(dumpno, uarr, tarr):
 	min_r = minarr_r[0]
 	minarr_th = np.argmin(th, axis=1)
 	min_th = minarr_th[min_r]
-	print("coords:", (min_r, min_th))
+	print(dumpno)
 	
 	# loading prims
 	prims = np.loadtxt(os.path.join(dumpsdir,'dump_0000{0:04d}'.format(dumpno)),skiprows=1)
@@ -70,3 +70,4 @@ tarr = []
 for i in range(200): 
 	plotting(i, uarr, tarr)
 plt.plot(tarr, uarr, 'b')
+plt.savefig(os.path.join(outputdir,'internal_energy_vs_time'))
