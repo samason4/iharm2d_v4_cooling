@@ -41,6 +41,42 @@ def plotting(dumpno, uarr, tarr):
 
 	t = '{:.3f}'.format(t)
 
+	print(dumpno)
+	
+	# loading prims
+	prims = np.loadtxt(os.path.join(dumpsdir,'dump_0000{0:04d}'.format(dumpno)),skiprows=1)
+	u = prims[:,1].reshape((n1,n2))
+	uarr.append(u[min_r][min_th])
+	tarr.append(t)
+
+#function that finds the indices:
+define find_indices(min_r, min_th):
+	# header info
+	header = open(os.path.join(dumpsdir,'dump_00000001),'r')
+	firstline = header.readline()
+	header.close()
+	firstline = firstline.split()
+	metric = firstline[9]
+	n1 = int(firstline[11])
+	n2 = int(firstline[12])
+
+	# if electron heating was enabled
+	if len(firstline) > 38:
+		ndim = int(firstline[27])
+		if metric == 'FMKS':
+			t = float(firstline[37])
+		elif metric == 'MKS':
+			t = float(firstline[34])
+	# if electron heating was not enabled
+	else:
+		ndim = int(firstline[22])	
+		if metric == 'FMKS':
+			t = float(firstline[32])
+		elif metric == 'MKS':
+			t = float(firstline[29])
+
+	t = '{:.3f}'.format(t)
+
 	#load grid stuff
 	grid = np.loadtxt(os.path.join(dumpsdir,'grid'))
 	r = grid[:,2].reshape((n1,n2))
@@ -57,16 +93,13 @@ def plotting(dumpno, uarr, tarr):
 	min_r = minarr_r[0]
 	minarr_th = np.argmin(th, axis=1)
 	min_th = minarr_th[min_r]
-	print(dumpno)
-	
-	# loading prims
-	prims = np.loadtxt(os.path.join(dumpsdir,'dump_0000{0:04d}'.format(dumpno)),skiprows=1)
-	u = prims[:,1].reshape((n1,n2))
-	uarr.append(u[min_r][min_th])
-	tarr.append(t)
-#actually plotting:
+
+actual plotting:
 uarr = []
 tarr = []
+min_r = 0.0
+min_th = 0.0
+find_indices(min_r, min_th)
 for i in range(201): 
 	plotting(i, uarr, tarr)
 plt.plot(tarr, uarr, 'b')
