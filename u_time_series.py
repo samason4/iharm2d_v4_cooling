@@ -20,6 +20,7 @@ def plotting(dumpno):
 	firstline = header.readline()
 	header.close()
 	firstline = firstline.split()
+	metric = firstline[9]
 	n1 = int(firstline[11])
 	n2 = int(firstline[12])
 
