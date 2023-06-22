@@ -52,7 +52,7 @@ void heat_electrons(struct GridGeom *G, struct FluidState *Ss, struct FluidState
 #pragma omp parallel for collapse(2)
   ZLOOP {
     heat_electrons_1zone(G, Ss, Sf, i, j);
-    //cool_electrons(G, Ss, Sf, i, j);
+    cool_electrons(G, Ss, Sf, i, j);
   }
 
   timer_stop(TIMER_ELECTRON_HEAT);
@@ -202,10 +202,10 @@ inline void cool_electrons(struct GridGeom *G, struct FluidState *Ss, struct Flu
   double uel = Sf->P[UU][j][i]*Munit*pow(Lunit,2)/pow(Tunit,2);
   r = r*Lunit;
   double m = 3.;
-  double alpha1 = pow(r,-3/2)*m/ut;
-  uel = uel*exp(-t/alpha1);
-  Sf->P[UU][j][i] = uel/(Munit*pow(Lunit,2)/pow(Tunit,2));
-  //printf("Ss: %lf,", Ss->P[UU][j][i]);
-  //printf("Sf: %lf\n", Sf->P[UU][j][i]);
+  double alpha1 = pow(pow(r,3/2)*m*ut, -1);
+  dudt = -1*alpha1*uel;
+  Sf->P[UU][j][i] += dudt*dt/(Munit*pow(Lunit,2)/pow(Tunit,2));
+  printf("Ss: %lf, ", Ss->P[UU][j][i]);
+  printf("Sf: %lf\n", Sf->P[UU][j][i]);
 }
 #endif // ELECTRONS
