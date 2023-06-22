@@ -67,7 +67,7 @@ def plotting(dumpno, uarr, tarr):
 #actually plotting:
 uarr = []
 tarr = []
-for i in range(200): 
+for i in range(201): 
 	plotting(i, uarr, tarr)
 plt.plot(tarr, uarr, 'b')
 plt.savefig(os.path.join(outputdir,'internal_energy_vs_time'))
