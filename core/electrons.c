@@ -203,7 +203,7 @@ inline void cool_electrons(struct GridGeom *G, struct FluidState *Ss, struct Flu
   r = r*Lunit;
   double m = 3.;
   double alpha1 = pow(pow(r,3/2)*m*ut, -1);
-  dudt = -1*alpha1*uel;
+  double dudt = -1*alpha1*uel;
   Sf->P[UU][j][i] += dudt*dt/(Munit*pow(Lunit,2)/pow(Tunit,2));
   printf("Ss: %lf, ", Ss->P[UU][j][i]);
   printf("Sf: %lf\n", Sf->P[UU][j][i]);
