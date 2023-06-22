@@ -71,3 +71,4 @@ for i in range(201):
 	plotting(i, uarr, tarr)
 plt.plot(tarr, uarr, 'b')
 plt.savefig(os.path.join(outputdir,'internal_energy_vs_time'))
+plt.close()
