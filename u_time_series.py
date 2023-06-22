@@ -13,13 +13,6 @@ outputdir = sys.argv[2]
 if not os.path.exists(outputdir):
 	os.makedirs(outputdir)
 
-# function to parallelize plotting
-def run_parallel(function, dlist,	nthreads):
-	pool = mp.Pool(nthreads)
-	pool.map_async(function, dlist).get(720000)
-	pool.close()
-	pool.join()
-
 def plotting(dumpno):	
 	
 	# header info
@@ -27,42 +20,22 @@ def plotting(dumpno):
 	firstline = header.readline()
 	header.close()
 	firstline = firstline.split()
-
-	rin = float(firstline[2])	
-	rmax = float(firstline[3])	
-	electrons = float(firstline[7])
-	metric = firstline[9]
 	n1 = int(firstline[11])
 	n2 = int(firstline[12])
 
-# if electron heating was enabled
+	# if electron heating was enabled
 	if len(firstline) > 38:
-		gam = float(firstline[20])
-		dx1 = float(firstline[25])
-		dx2 = float(firstline[26])
 		ndim = int(firstline[27])
 		if metric == 'FMKS':
-			rEH = float(firstline[33])
-			a = float(firstline[36])
 			t = float(firstline[37])
 		elif metric == 'MKS':
-			rEH = float(firstline[30])
-			a = float(firstline[33])
 			t = float(firstline[34])
-
 	# if electron heating was not enabled
 	else:
-		gam = float(firstline[15])
-		dx1 = float(firstline[20])
-		dx2 = float(firstline[21])
 		ndim = int(firstline[22])	
 		if metric == 'FMKS':
-			rEH = float(firstline[28])
-			a = float(firstline[31])
 			t = float(firstline[32])
 		elif metric == 'MKS':
-			rEH = float(firstline[25])
-			a = float(firstline[28])
 			t = float(firstline[29])
 
 	t = '{:.3f}'.format(t)
@@ -71,25 +44,21 @@ def plotting(dumpno):
 	grid = np.loadtxt(os.path.join(dumpsdir,'grid'))
 	r = grid[:,2].reshape((n1,n2))
 	th = grid[:,3].reshape((n1,n2))
-	print(r)
+
+	#find the right indices
+	r.all() -= 12
+	r.all() = abs(r.all())
+	minarr_r = np.argmin(r, axis=0)
+	min_r = minarr_r[0]
+	th.all() -= np.pi/2
+	th.all() = abs(th.all())
+	minarr_th = np.argmin(th, axis=1)
+	min_th = minarr_th[min_r]
+	print("coords:", (min_r, min_th))
 	
 	# loading prims
 	prims = np.loadtxt(os.path.join(dumpsdir,'dump_0000{0:04d}'.format(dumpno)),skiprows=1)
 	u = prims[:,1].reshape((n1,n2))
-	max = np.argmax(u, axis=None)
-	index1 = 0
-	for i in range(n2):
-		if(max > n1):
-			index1 += 1
-			max -= n1
-	u_max = u[index1][max]
-	#print(t, u_max)
-if __name__=="__main__":
-	dstart = int(sorted(glob.glob(os.path.join(dumpsdir,'dump*')))[0][-4:])
-	dend = int(sorted(glob.glob(os.path.join(dumpsdir,'dump*')))[-1][-4:])
-	dlist = range(dstart,dend+1)
 
-	ncores = psutil.cpu_count(logical=True)
-	pad = 0.5
-	nthreads = int(ncores*pad)
-	run_parallel(plotting,dlist,nthreads)
+#actually call the function:
+plotting(0000)
