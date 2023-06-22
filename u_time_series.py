@@ -13,7 +13,7 @@ outputdir = sys.argv[2]
 if not os.path.exists(outputdir):
 	os.makedirs(outputdir)
 
-def plotting(dumpno, uarr, tarr):	
+def plotting(dumpno, uarr, tarr, min_r, min_th):	
 	
 	# header info
 	header = open(os.path.join(dumpsdir,'dump_0000{0:04d}'.format(dumpno)),'r')
@@ -101,7 +101,7 @@ min_r = 0.0
 min_th = 0.0
 find_indices(min_r, min_th)
 for i in range(201): 
-	plotting(i, uarr, tarr)
+	plotting(i, uarr, tarr, min_r, min_th)
 plt.plot(tarr, uarr, 'b')
 plt.xticks(range(0, 201, 50))
 plt.savefig(os.path.join(outputdir,'internal_energy_vs_time'))
