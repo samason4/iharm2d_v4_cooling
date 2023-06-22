@@ -100,6 +100,8 @@ tarr = []
 min_r = 0.0
 min_th = 0.0
 find_indices(min_r, min_th)
+print(min_r)
+print(", ", min_th)
 for i in range(201): 
 	plotting(i, uarr, tarr, min_r, min_th)
 plt.plot(tarr, uarr, 'b')
