@@ -92,10 +92,10 @@ def find_indices():
 	minarr_r = np.argmin(r, axis=0)
 	min_r = minarr_r[0]
 	minarr_th = np.argmin(th, axis=1)
-	min_th = minarr_th[min_r]
-	return [min_r, min_th]"""
+	min_th = minarr_th[min_r]"""
 	min_r  = np.argmin(np.fabs(r[:,0] - 12))
 	min_th = np.argmin(np.fabs(th[min_r,:] - np.pi/2))
+	return [min_r, min_th]
 
 #actual plotting:
 uarr = []
