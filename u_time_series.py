@@ -50,7 +50,7 @@ def plotting(dumpno, uarr, tarr, min_r, min_th):
 	tarr.append(t)
 
 #function that finds the indices:
-def find_indices(min_r, min_th):
+def find_indices():
 	# header info
 	header = open(os.path.join(dumpsdir,'dump_0000{0:04d}'.format(0)),'r')
 	firstline = header.readline()
@@ -91,19 +91,17 @@ def find_indices(min_r, min_th):
 			th[i][j] = abs(th[i][j])
 	minarr_r = np.argmin(r, axis=0)
 	min_r += minarr_r[0]
-	print("first min_r: ", min_r)
 	minarr_th = np.argmin(th, axis=1)
 	min_th += minarr_th[min_r]
-	print("first min_th: ", min_th)
+	return [min_r, min_th]
 
 #actual plotting:
 uarr = []
 tarr = []
-min_r = 0
-min_th = 0
-find_indices(min_r, min_th)
-print("second min_r: ", min_r)
-print("second min_th: ", min_th)
+mins = find_indices(min_r, min_th)
+min_r = mins[0]
+min_th = mins[1]
+print(mins)
 for i in range(201): 
 	plotting(i, uarr, tarr, min_r, min_th)
 plt.plot(tarr, uarr, 'b')
