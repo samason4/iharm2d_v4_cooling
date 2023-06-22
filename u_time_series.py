@@ -50,7 +50,7 @@ def plotting(dumpno, uarr, tarr):
 	tarr.append(t)
 
 #function that finds the indices:
-define find_indices(min_r, min_th):
+def find_indices(min_r, min_th):
 	# header info
 	header = open(os.path.join(dumpsdir,'dump_0000{0:04d}'.format(0)),'r')
 	firstline = header.readline()
