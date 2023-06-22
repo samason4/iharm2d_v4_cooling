@@ -52,7 +52,7 @@ void heat_electrons(struct GridGeom *G, struct FluidState *Ss, struct FluidState
 #pragma omp parallel for collapse(2)
   ZLOOP {
     heat_electrons_1zone(G, Ss, Sf, i, j);
-    cool_electrons(G, Ss, Sf, i, j);
+    cool_electrons_1zone(G, Ss, Sf, i, j);
   }
 
   timer_stop(TIMER_ELECTRON_HEAT);
@@ -152,7 +152,7 @@ inline void fixup_electrons_1zone(struct FluidState *S, int i, int j)
     S->P[idx][j][i] = MY_MIN(S->P[idx][j][i], kelmax);
   }
 }
-inline void cool_electrons(struct GridGeom *G, struct FluidState *Ss, struct FluidState *Sf, int i, int j)
+inline void cool_electrons_1zone(struct GridGeom *G, struct FluidState *Ss, struct FluidState *Sf, int i, int j)
 {
 //    double uel = 1./(game-1.)*Ss->P[idx][j][i]*pow(Ss->P[RHO][j][i],game);//taken from KAWAZURA
 //    double Tel = (game-1.)*uel/Ss->P[RHO][j][i];// I'm assumeing that Tel(which I took from KAWAZURA) is the electron temperature.
@@ -199,13 +199,19 @@ inline void cool_electrons(struct GridGeom *G, struct FluidState *Ss, struct Flu
   double Lunit = 6.67430e-8*MBH/pow(29979245800,2);
   double Tunit = 6.67430e-8*MBH/pow(29979245800,2);
   double ut = ucon[0]*Tunit;
-  double uel = Sf->P[UU][j][i]*Munit*pow(Lunit,2)/pow(Tunit,2);
+  //double uel = Sf->P[UU][j][i]*Munit*pow(Lunit,2)/pow(Tunit,2);
   r = r*Lunit;
   double m = 3.;
   double alpha1 = pow(pow(r,3/2)*m*ut, -1);
-  double dudt = -1*alpha1*uel;
-  Sf->P[UU][j][i] += dudt*dt/(Munit*pow(Lunit,2)/pow(Tunit,2));
-  printf("Ss: %lf, ", Ss->P[UU][j][i]);
-  printf("Sf: %lf\n", Sf->P[UU][j][i]);
+	
+  // Evolve model entropy(ies)
+  for (int idx = KEL0; idx < NVAR ; idx++) {
+    entropy_el = Sf->P[idx][j][i];
+    double uel = pow(Sf->P[RHO][j][i], game)*exp(entropy_el*(game-1));//wasn't sure how to add in the electron mass or boltzmann's constant so I left them out for now
+    uel = uel*Munit*pow(Lunit,2)/pow(Tunit,2);
+    uel += -1*alpha1*uel*dt;
+    uel = uel/(Munit*pow(Lunit,2)/pow(Tunit,2));
+    Sf->P[idx][j][i] = log(uel/pow(Sf->P[RHO][j][i], game))/(game-1);//Again, I left out K_B and m
+  }
 }
 #endif // ELECTRONS
