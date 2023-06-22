@@ -46,12 +46,14 @@ def plotting(dumpno):
 	th = grid[:,3].reshape((n1,n2))
 
 	#find the right indices
-	r.all() -= 12
-	r.all() = abs(r.all())
+	for i in range(n1):
+		for j in range(n2):
+			r[i][j] -= 12
+			r[i][j] = abs(r.all())
+			th[i][j] -= np.pi/2
+			th[i][j] = abs(th.all())
 	minarr_r = np.argmin(r, axis=0)
 	min_r = minarr_r[0]
-	th.all() -= np.pi/2
-	th.all() = abs(th.all())
 	minarr_th = np.argmin(th, axis=1)
 	min_th = minarr_th[min_r]
 	print("coords:", (min_r, min_th))
