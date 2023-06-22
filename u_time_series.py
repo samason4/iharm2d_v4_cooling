@@ -90,10 +90,10 @@ def find_indices(min_r, min_th):
 			th[i][j] -= np.pi/2
 			th[i][j] = abs(th[i][j])
 	minarr_r = np.argmin(r, axis=0)
-	min_r = minarr_r[0]
+	min_r += minarr_r[0]
 	print("first min_r: ", min_r)
 	minarr_th = np.argmin(th, axis=1)
-	min_th = minarr_th[min_r]
+	min_th += minarr_th[min_r]
 	print("first min_th: ", min_th)
 
 #actual plotting:
