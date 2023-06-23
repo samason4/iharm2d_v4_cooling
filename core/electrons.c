@@ -151,7 +151,7 @@ inline void fixup_electrons_1zone(struct FluidState *S, int i, int j)
     S->P[idx][j][i] = MY_MIN(S->P[idx][j][i], kelmax);
   }
 }
-inline void cool_electrons_1zone(struct GridGeom *G, struct FluidState *Ss, struct FluidState *Sf, int i, int j)
+/*inline void cool_electrons_1zone(struct GridGeom *G, struct FluidState *Ss, struct FluidState *Sf, int i, int j)
 {
 //    double uel = 1./(game-1.)*Ss->P[idx][j][i]*pow(Ss->P[RHO][j][i],game);//taken from KAWAZURA
 //    double Tel = (game-1.)*uel/Ss->P[RHO][j][i];// I'm assumeing that Tel(which I took from KAWAZURA) is the electron temperature.
@@ -212,5 +212,5 @@ inline void cool_electrons_1zone(struct GridGeom *G, struct FluidState *Ss, stru
     uel = uel/(Munit*pow(Lunit,2)/pow(Tunit,2));
     Sf->P[idx][j][i] = log(uel/pow(Sf->P[RHO][j][i], game))*1.380649e-16/9.10938370e-28/(game-1);//Again, I put K_B and m in cgs
   }
-}
+}*/
 #endif // ELECTRONS
