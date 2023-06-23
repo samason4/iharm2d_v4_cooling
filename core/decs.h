@@ -293,14 +293,16 @@ extern int icurr, jcurr;
 // Parallelism
 extern int nthreads;
 
+//Electron cooling
+#define MBH (8.26e39) // Mass of the black hole
+#define Munit (1) // Munit for code<->CGS conversion
+
 // Electrons
 #if ELECTRONS
 // TODO put these in parameters.h? Define MP/ME direct?
 #define KTOTMAX (3.)
 #define ME (9.1093826e-28  ) // Electron mass
 #define MP (1.67262171e-24 ) // Proton mass
-#define MBH (8.26e39) // Mass of the black hole
-#define Munit (1) // Munit for code<->CGS conversion
 extern double game, gamp;
 extern double fel0;
 extern double tptemin, tptemax;
@@ -381,6 +383,9 @@ void bl_coord(const double X[NDIM], double *r, double *th);
 // bounds.c
 void set_bounds(struct GridGeom *G, struct FluidState *S);
 void fix_flux(struct FluidFlux *F);
+
+//cooling.c
+void cool_electrons(struct FluidState *S)
 
 // coord.c
 void coord(int i, int j, int loc, double *X);
