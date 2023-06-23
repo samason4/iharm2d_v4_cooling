@@ -52,7 +52,6 @@ void heat_electrons(struct GridGeom *G, struct FluidState *Ss, struct FluidState
 #pragma omp parallel for collapse(2)
   ZLOOP {
     heat_electrons_1zone(G, Ss, Sf, i, j);
-    cool_electrons_1zone(G, Ss, Sf, i, j);
   }
 
   timer_stop(TIMER_ELECTRON_HEAT);
