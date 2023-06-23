@@ -13,6 +13,7 @@ void cool_electrons(struct FluidState *S)
 void cool_electrons_1zone(struct FluidState *S, int i, int j)
 {
   //to find r and ut:
+  // double r = G->r
   double X[NDIM], r, th, ucon[NDIM], trans[NDIM][NDIM], tmp[NDIM];
   double AA, BB, CC, discr;
   double alpha, gamma, beta[NDIM];
