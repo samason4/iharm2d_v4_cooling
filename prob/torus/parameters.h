@@ -32,7 +32,7 @@
 // SUPPRESS_MAG_HEAT - (0,1) No electron heating when sigma > 1
 // BETA_HEAT         - (0,1) Beta-dependent electron heating
  
-#define ELECTRONS           1
+#define ELECTRONS           0 // temporarily turned off heating so I can test the cooling
 #define ALLMODELS           1
 #define SUPPRESS_HIGHB_HEAT 1
 #define BETA_HEAT           1
