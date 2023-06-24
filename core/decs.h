@@ -124,7 +124,7 @@
 #define B1  (5)
 #define B2  (6)
 #define B3  (7)
-#define KTOT (8)*********************temporary, only for tests************************************
+#define KTOT (8)//*********************temporary, only for tests************************************
 #if ELECTRONS
 #define KTOT (8)
 #if ALLMODELS     // Nested if statement for ALLMODELS run
