@@ -385,7 +385,7 @@ void set_bounds(struct GridGeom *G, struct FluidState *S);
 void fix_flux(struct FluidFlux *F);
 
 //cooling.c
-void cool_electrons(struct FluidState *S)
+//void cool_electrons(struct FluidState *S)
 
 // coord.c
 void coord(int i, int j, int loc, double *X);
