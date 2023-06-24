@@ -265,9 +265,9 @@ void init(struct GridGeom *G, struct FluidState *S)
     // B3 is uniformly 0
   }
 
-#if ELECTRONS
-  init_electrons(G, S);
-#endif
+//#if ELECTRONS
+  init_electrons(G, S);//**************temporarily took out the #if statement*****************************************
+//#endif
 
   // Enforce boundary conditions
   fixup(G, S);

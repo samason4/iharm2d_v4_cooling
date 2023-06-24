@@ -8,7 +8,7 @@ void cool_electrons(struct GridGeom *G, struct FluidState *S)
     cool_electrons_1zone(G, S, i, j);
   }
 }
-
+/*
 void init_electrons(struct GridGeom *G, struct FluidState *S)
 {
   ZLOOPALL {
@@ -16,7 +16,7 @@ void init_electrons(struct GridGeom *G, struct FluidState *S)
     S->P[KTOT][j][i] = (gam-1.)*S->P[UU][j][i]*pow(S->P[RHO][j][i],-gam);
     }
   }
-
+*/
 void cool_electrons_1zone(struct GridGeom *G, struct FluidState *S, int i, int j)
 {
   //to find ut:
