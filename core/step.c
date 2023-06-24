@@ -116,6 +116,10 @@ inline double advance_fluid(struct GridGeom *G, struct FluidState *Si, struct Fl
   PLOOP ZLOOPALL Sf->P[ip][j][i] = Si->P[ip][j][i];
 #endif
 
+  //Electron test cooling function (guess as to if it should be Si, Ss, or Sf)
+  if(Dt == dt*0.5):
+    cool_electrons(G, Si);
+
   double ndt = get_flux(G, Ss, F);
 
 #if METRIC == MKS
@@ -153,6 +157,10 @@ inline double advance_fluid(struct GridGeom *G, struct FluidState *Si, struct Fl
   
   timer_stop(TIMER_U_TO_P);
 
+  //Electron test cooling function (guess as to if it should be Si, Ss, or Sf)
+  if(Dt == dt):
+    cool_electrons(G, Sf);
+  
 #pragma omp parallel for simd
   ZLOOPALL
     fail_save[j][i] = pflag[j][i];

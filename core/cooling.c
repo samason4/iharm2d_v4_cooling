@@ -2,9 +2,11 @@
 void cool_electrons_1zone(struct GridGeom *G, struct FluidState *S, int i, int j);
 
 void cool_electrons(struct GridGeom *G, struct FluidState *S)
+void cool_electrons(struct GridGeom *G, struct FluidState *S)
 {
   #pragma omp parallel for collapse(2)
   ZLOOP {
+    cool_electrons_1zone(G, S, i, j);
     cool_electrons_1zone(G, S, i, j);
   }
 }
@@ -25,10 +27,18 @@ void cool_electrons_1zone(struct GridGeom *G, struct FluidState *S, int i, int j
 
   // to find r:
   double X[NDIM];
+  //to find ut:
+  ucon_calc(G, S, i, j, CENT);
+  double ut = S->ucon[0][j][i];
+
+  // to find r:
+  double X[NDIM];
   coord(i, j, CENT, X);
+  double r, th;
   double r, th;
   bl_coord(X, &r, &th);
 
+  //m is arbitrary
   //m is arbitrary
   double m = 3.0;
   
