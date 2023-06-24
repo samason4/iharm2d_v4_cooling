@@ -1,4 +1,4 @@
-#include "decs.h"
+/*#include "decs.h"
 #include "bl_coord.h"
 void cool_electrons_1zone(struct FluidState *S, int i, int j)
 
@@ -41,7 +41,7 @@ void cool_electrons_1zone(struct FluidState *S, int i, int j)
   double ut = ucon[0];
 
   //m is arbitrary and we can just set is to 3 because it just needs tobe larger than 1
-  double m = 3.0;
+  double m = 3.0;*/
   
   //dt is a global variable so we don't even need to initialize it
 
