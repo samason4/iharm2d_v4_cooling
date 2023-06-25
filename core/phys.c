@@ -48,11 +48,9 @@ void prim_to_flux(struct GridGeom *G, struct FluidState *S, int i, int j, int di
   flux[B3][j][i] = S->bcon[3][j][i]*S->ucon[dir][j][i] - S->bcon[dir][j][i]*S->ucon[3][j][i];
 
 #if ELECTRONS
-#if HEATING
   for (int idx = KEL0; idx < NVAR; idx++)  
     flux[idx][j][i] = flux[RHO][j][i]*S->P[idx][j][i];
   flux[KTOT][j][i] = flux[RHO][j][i]*S->P[KTOT][j][i];
-#endif
 #endif
   
   PLOOP flux[ip][j][i] *= G->gdet[loc][j][i];
@@ -87,7 +85,6 @@ void prim_to_flux_vec(struct GridGeom *G, struct FluidState *S, int dir, int loc
   }
 
 #if ELECTRONS
-#if HEATING
 #pragma omp for collapse(2)
   ZSLOOP(jstart, jstop, istart, istop)
   {
@@ -96,7 +93,6 @@ void prim_to_flux_vec(struct GridGeom *G, struct FluidState *S, int dir, int loc
       flux[idx][j][i] = flux[RHO][j][i]*S->P[idx][j][i];
     flux[KTOT][j][i] = flux[RHO][j][i]*S->P[KTOT][j][i];
   }
-#endif
 #endif
 }
 }
@@ -316,5 +312,5 @@ double bsq = 0.;//in this function the original return was just bsq
   DLOOP1
     bsq += S->bcon[mu][j][i]*S->bcov[mu][j][i];
   
-  return SMALL; //MY_MAX(bsq, SMALL);
+  return MY_MAX(bsq, SMALL);
 }

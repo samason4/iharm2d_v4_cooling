@@ -31,6 +31,7 @@
 #define ELECTRONS           0
 #define ALLMODELS           0
 #define HEATING             0
+#define COOLING             0
 #define SUPPRESS_HIGHB_HEAT 1
 #define BETA_HEAT           1
 

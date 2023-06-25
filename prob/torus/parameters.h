@@ -33,8 +33,9 @@
 // BETA_HEAT         - (0,1) Beta-dependent electron heating
  
 #define ELECTRONS           1
-#define ALLMODELS           1
+#define ALLMODELS           0
 #define HEATING             0
+#define COOLING             1
 #define SUPPRESS_HIGHB_HEAT 1
 #define BETA_HEAT           1
 

@@ -40,8 +40,9 @@ void dump_backend(struct GridGeom *G, struct FluidState *S, int type)
   #else
   const char varNames[NVAR][STRLEN] = {"RHO", "UU", "U1", "U2", "U3", "B1", "B2", "B3", "KTOT", "KEL0"};
   #endif
-  #else
-  const char varNames[NVAR][STRLEN] = {"RHO", "UU", "U1", "U2", "U3", "B1", "B2", "B3", "KTOT"};
+  #endif
+  #if COOLING
+  const char varNames[NVAR][STRLEN] = {"RHO", "UU", "U1", "U2", "U3", "B1", "B2", "B3", "KTOT", "KEL0"};
   #endif
   #else
   const char varNames[NVAR][STRLEN] = {"RHO", "UU", "U1", "U2", "U3", "B1", "B2", "B3"};

@@ -25,7 +25,10 @@ void fixup_electrons_1zone(struct FluidState *S, int i, int j);
 void heat_electrons_1zone(struct GridGeom *G, struct FluidState *Sh, struct FluidState *S, int i, int j);
 double get_fels(struct GridGeom *G, struct FluidState *S, int i, int j, int model);
 #endif //HEATING
+
+#if COOLING
 void cool_electrons_1zone(struct GridGeom *G, struct FluidState *S, int i, int j);
+#endif
 
 void init_electrons(struct GridGeom *G, struct FluidState *S)
 {
@@ -37,11 +40,9 @@ void init_electrons(struct GridGeom *G, struct FluidState *S)
     S->P[KTOT][j][i] = (gam-1.)*S->P[UU][j][i]*pow(S->P[RHO][j][i],-gam);
 
     // Initialize model entropy(ies)
-  #if HEATING
     for (int idx = KEL0; idx < NVAR ; idx++) {
       S->P[idx][j][i] = (game-1.)*uel*pow(S->P[RHO][j][i],-game);
     }
-  #endif
   }
 
   // Necessary?  Usually called right afterward
@@ -158,6 +159,7 @@ inline void fixup_electrons_1zone(struct FluidState *S, int i, int j)
 }
 #endif //HEATING
 
+#if COOLING
 void cool_electrons(struct GridGeom *G, struct FluidState *S)
 {
   #pragma omp parallel for collapse(2)
@@ -184,12 +186,13 @@ inline void cool_electrons_1zone(struct GridGeom *G, struct FluidState *S, int i
   //dt is a global variable so we don't even need to initialize it
 
   //to fing uel:
-  double uel = pow(S->P[RHO][j][i], game)*exp(S->P[KTOT][j][i]*(game-1));
+  double uel = pow(S->P[RHO][j][i], game)*exp(S->P[KEL0][j][i]*(game-1));
 
   //update the internal energy of the electrons at (i,j):
   uel -= uel/(m*pow(r, 1.5)*ut)*dt/2;
 
   //update the entropy with the new internal energy
-  S->P[KTOT][j][i] = log(uel/pow(S->P[RHO][j][i], game))/(game-1);
+  S->P[Kel0][j][i] = log(uel/pow(S->P[RHO][j][i], game))/(game-1);
 }
+#endif // COOLING
 #endif // ELECTRONS

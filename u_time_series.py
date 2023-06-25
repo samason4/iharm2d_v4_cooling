@@ -45,8 +45,11 @@ def plotting(dumpno, uarr, tarr, min_r, min_th):
 	
 	# loading prims
 	prims = np.loadtxt(os.path.join(dumpsdir,'dump_0000{0:04d}'.format(dumpno)),skiprows=1)
-	u = prims[:,1].reshape((n1,n2))
-	uarr.append(u[min_r][min_th])
+	kel0 = prims[:,9].reshape((n1,n2))
+	rho = prims[:,0].reshape((n1,n2))
+	game = 1.333333
+	u = rho[min_r][min_th]**game*np.exp(kel0[min_r][min_th]*(game-1))
+	uarr.append(u)
 	tarr.append(t)
 
 #function that finds the indices:
@@ -99,6 +102,6 @@ for i in range(201):
 plt.plot(tarr, uarr, 'b')
 plt.xticks(range(0, 201, 50))
 plt.xlabel("time")
-plt.ylabel("internal energy")
+plt.ylabel("electron internal energy")
 plt.savefig(os.path.join(outputdir,'internal_energy_vs_time'))
 plt.close()

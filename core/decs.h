@@ -137,11 +137,13 @@
 #define KEL0  (9)
 #define NVAR (10)
 #endif
-#else
-#define NVAR (9)
+#endif
+#if COOLING
+#define KEL0 (9)
+#define NVAR (10)
 #endif
 #else
-#define NVAR (8)
+#define NVAR (9)
 #endif
 
 // Centering of grid functions
@@ -423,7 +425,9 @@ void init_electrons(struct GridGeom *G, struct FluidState *S);
 void heat_electrons(struct GridGeom *G, struct FluidState *Sh, struct FluidState *S);
 void fixup_electrons(struct FluidState *S);
 #endif
+#if COOLING
 void cool_electrons(struct GridGeom *G, struct FluidState *S);
+#endif
 #endif
 
 // fixup.c
