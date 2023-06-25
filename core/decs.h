@@ -138,7 +138,7 @@
 #define NVAR (10)
 #endif
 #else
-#define NVAR(9)
+#define NVAR (9)
 #endif
 #else
 #define NVAR (8)
