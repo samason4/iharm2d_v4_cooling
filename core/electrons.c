@@ -192,7 +192,7 @@ inline void cool_electrons_1zone(struct GridGeom *G, struct FluidState *S, int i
   uel -= uel/(m*pow(r, 1.5)*ut)*dt/2;
 
   //update the entropy with the new internal energy
-  S->P[Kel0][j][i] = log(uel/pow(S->P[RHO][j][i], game))/(game-1);
+  S->P[KEL0][j][i] = log(uel/pow(S->P[RHO][j][i], game))/(game-1);
 }
 #endif // COOLING
 #endif // ELECTRONS
