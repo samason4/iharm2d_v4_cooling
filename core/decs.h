@@ -124,7 +124,6 @@
 #define B1  (5)
 #define B2  (6)
 #define B3  (7)
-#define KTOT (8)//*********************temporary, only for tests************************************
 #if ELECTRONS
 #define KTOT (8)
 #if ALLMODELS     // Nested if statement for ALLMODELS run
@@ -385,9 +384,6 @@ void bl_coord(const double X[NDIM], double *r, double *th);
 void set_bounds(struct GridGeom *G, struct FluidState *S);
 void fix_flux(struct FluidFlux *F);
 
-//cooling.c
-void cool_electrons(struct GridGeom *G, struct FluidState *S);
-
 // coord.c
 void coord(int i, int j, int loc, double *X);
 void bl_coord(const double X[NDIM], double *r, double *th);
@@ -421,6 +417,7 @@ void update_f(struct FluidFlux *F, GridPrim *dU);
 void init_electrons(struct GridGeom *G, struct FluidState *S);
 void heat_electrons(struct GridGeom *G, struct FluidState *Sh, struct FluidState *S);
 void fixup_electrons(struct FluidState *S);
+void cool_electrons(struct GridGeom *G, struct FluidState *S);
 #endif
 
 // fixup.c
