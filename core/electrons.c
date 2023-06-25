@@ -11,7 +11,7 @@
 #include "bl_coord.h"
 
 #if ELECTRONS
-
+#if HEATING
 // TODO put these in options with a default in decs.h
 // Defined as in decs.h, CONSTANT not included in ALLMODELS version
 // KAWAZURA is run by default if ALLMODELS=0 
@@ -24,6 +24,7 @@
 void fixup_electrons_1zone(struct FluidState *S, int i, int j);
 void heat_electrons_1zone(struct GridGeom *G, struct FluidState *Sh, struct FluidState *S, int i, int j);
 double get_fels(struct GridGeom *G, struct FluidState *S, int i, int j, int model);
+#endif //HEATING
 void cool_electrons_1zone(struct GridGeom *G, struct FluidState *S, int i, int j);
 
 void init_electrons(struct GridGeom *G, struct FluidState *S)
@@ -155,7 +156,7 @@ inline void fixup_electrons_1zone(struct FluidState *S, int i, int j)
     S->P[idx][j][i] = MY_MIN(S->P[idx][j][i], kelmax);
   }
 }
-#endif
+#endif //HEATING
 
 void cool_electrons(struct GridGeom *G, struct FluidState *S)
 {
@@ -181,9 +182,6 @@ inline void cool_electrons_1zone(struct GridGeom *G, struct FluidState *S, int i
   double m = 3.0;
   
   //dt is a global variable so we don't even need to initialize it
-
-  //game is defined under if ELECTRONS, but since we disabled ELECTRONS, we need to redefine it for now
-  double game = 1.333333;
 
   //to fing uel:
   double uel = pow(S->P[RHO][j][i], game)*exp(S->P[KTOT][j][i]*(game-1));

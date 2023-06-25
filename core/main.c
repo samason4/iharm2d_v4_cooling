@@ -148,7 +148,7 @@ int main(int argc, char *argv[])
       dt = tf-t;
     }
 
-    fprintf(stdout, "t = %10.5g dt = %10.5g n = %d  internal energy = %lf\n", t, dt, nstep, S->P[UU]);
+    fprintf(stdout, "t = %10.5g dt = %10.5g n = %d\n", t, dt, nstep);
   
     // Write dump, log or restart based on the respective cadence
     if (t < tf)
