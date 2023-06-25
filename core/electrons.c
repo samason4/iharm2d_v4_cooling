@@ -36,15 +36,18 @@ void init_electrons(struct GridGeom *G, struct FluidState *S)
     S->P[KTOT][j][i] = (gam-1.)*S->P[UU][j][i]*pow(S->P[RHO][j][i],-gam);
 
     // Initialize model entropy(ies)
+  #if HEATING
     for (int idx = KEL0; idx < NVAR ; idx++) {
       S->P[idx][j][i] = (game-1.)*uel*pow(S->P[RHO][j][i],-game);
     }
+  #endif
   }
 
   // Necessary?  Usually called right afterward
   set_bounds(G, S);
 }
 
+#if HEATING
 // TODO merge these
 void heat_electrons(struct GridGeom *G, struct FluidState *Ss, struct FluidState *Sf)
 {
@@ -152,6 +155,7 @@ inline void fixup_electrons_1zone(struct FluidState *S, int i, int j)
     S->P[idx][j][i] = MY_MIN(S->P[idx][j][i], kelmax);
   }
 }
+#endif
 
 void cool_electrons(struct GridGeom *G, struct FluidState *S)
 {
