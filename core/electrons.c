@@ -24,6 +24,7 @@
 void fixup_electrons_1zone(struct FluidState *S, int i, int j);
 void heat_electrons_1zone(struct GridGeom *G, struct FluidState *Sh, struct FluidState *S, int i, int j);
 double get_fels(struct GridGeom *G, struct FluidState *S, int i, int j, int model);
+void cool_electrons_1zone(struct GridGeom *G, struct FluidState *S, int i, int j);
 
 void init_electrons(struct GridGeom *G, struct FluidState *S)
 {
@@ -151,66 +152,42 @@ inline void fixup_electrons_1zone(struct FluidState *S, int i, int j)
     S->P[idx][j][i] = MY_MIN(S->P[idx][j][i], kelmax);
   }
 }
-/*inline void cool_electrons_1zone(struct GridGeom *G, struct FluidState *Ss, struct FluidState *Sf, int i, int j)
+
+void cool_electrons(struct GridGeom *G, struct FluidState *S)
 {
-//    double uel = 1./(game-1.)*Ss->P[idx][j][i]*pow(Ss->P[RHO][j][i],game);//taken from KAWAZURA
-//    double Tel = (game-1.)*uel/Ss->P[RHO][j][i];// I'm assumeing that Tel(which I took from KAWAZURA) is the electron temperature.
-//    double Theta_electrons = Tel/5.92986e9;
-//    double p_cool = (game-1)*uel;
-//    double bsq = bsq_calc(Ss, i, j);
-//    double ne = p_cool/Tel/1.380649e-16;
-//    double drho;
-//    double Du = 1.28567e-14*ne*pow(bsq,2)*pow(Theta_electrons,2);//idk about using ne or B with this
-//    Sf->P[UU][j][i] += Du;
-//    Sf->P[idx][j][i] += (Du/Ss->P[RHO][j][i]-(p_cool+Ss->P[UU][j][i])/pow(Ss->P[RHO][j][i],2)*drho)/Tel;
-
-//-----------------------------------------------------------------------------------
-//everything in the ------'s is taken from bl_coord.c so that I can access ucon[0]
-  double X[NDIM], r, th, ucon[NDIM], trans[NDIM][NDIM], tmp[NDIM];
-  double AA, BB, CC, discr;
-  double alpha, gamma, beta[NDIM];
-  struct blgeom;
-  struct of_geom blgeom;
-
-  coord(i, j, CENT, X);
-  bl_coord(X, &r, &th);
-  blgset(i, j, &blgeom);
-
-  ucon[1] = Sf->P[U1][j][i];
-  ucon[2] = Sf->P[U2][j][i];
-  ucon[3] = Sf->P[U3][j][i];
-
-  AA = blgeom.gcov[0][0];
-  BB = 2.*(blgeom.gcov[0][1]*ucon[1] +
-           blgeom.gcov[0][2]*ucon[2] +
-           blgeom.gcov[0][3]*ucon[3]);
-  CC = 1. +
-      blgeom.gcov[1][1]*ucon[1]*ucon[1] +
-      blgeom.gcov[2][2]*ucon[2]*ucon[2] +
-      blgeom.gcov[3][3]*ucon[3]*ucon[3] +
-      2.*(blgeom.gcov[1][2]*ucon[1]*ucon[2] +
-          blgeom.gcov[1][3]*ucon[1]*ucon[3] +
-          blgeom.gcov[2][3]*ucon[2]*ucon[3]);
-
-  discr = BB*BB - 4.*AA*CC;
-  ucon[0] = (-BB - sqrt(discr))/(2.*AA);
-//----------------------------------------------------------------------------
-  double Lunit = 6.67430e-8*MBH/pow(29979245800,2);
-  double Tunit = 6.67430e-8*MBH/pow(29979245800,2);
-  double ut = ucon[0]*Tunit;
-  //double uel = Sf->P[UU][j][i]*Munit*pow(Lunit,2)/pow(Tunit,2);
-  r = r*Lunit;
-  double m = 3.;
-  double alpha1 = pow(pow(r,3/2)*m*ut, -1);
-	
-  // Evolve model entropy(ies)
-  for (int idx = KEL0; idx < NVAR ; idx++) {
-    double entropy_el = Sf->P[idx][j][i];
-    double uel = pow(Sf->P[RHO][j][i], game)*exp(entropy_el*(game-1)*9.10938370e-28/1.380649e-16);//wasn't sure how to add in the electron mass or boltzmann's constant so I put them in cgs for now
-    uel = uel*Munit*pow(Lunit,2)/pow(Tunit,2);
-    uel += -1*alpha1*uel*dt;
-    uel = uel/(Munit*pow(Lunit,2)/pow(Tunit,2));
-    Sf->P[idx][j][i] = log(uel/pow(Sf->P[RHO][j][i], game))*1.380649e-16/9.10938370e-28/(game-1);//Again, I put K_B and m in cgs
+  #pragma omp parallel for collapse(2)
+  ZLOOP {
+    cool_electrons_1zone(G, S, i, j);
   }
-}*/
+}
+
+inline void cool_electrons_1zone(struct GridGeom *G, struct FluidState *S, int i, int j)
+{
+  //to find ut:
+  ucon_calc(G, S, i, j, CENT);
+  double ut = S->ucon[0][j][i];
+
+  // to find r:
+  double X[NDIM];
+  coord(i, j, CENT, X);
+  double r, th;
+  bl_coord(X, &r, &th);
+
+  //m is arbitrary
+  double m = 3.0;
+  
+  //dt is a global variable so we don't even need to initialize it
+
+  //game is defined under if ELECTRONS, but since we disabled ELECTRONS, we need to redefine it for now
+  double game = 1.333333;
+
+  //to fing uel:
+  double uel = pow(S->P[RHO][j][i], game)*exp(S->P[KTOT][j][i]*(game-1));
+
+  //update the internal energy of the electrons at (i,j):
+  uel -= uel/(m*pow(r, 1.5)*ut)*dt/2;
+
+  //update the entropy with the new internal energy
+  S->P[KTOT][j][i] = log(uel/pow(S->P[RHO][j][i], game))/(game-1);
+}
 #endif // ELECTRONS
