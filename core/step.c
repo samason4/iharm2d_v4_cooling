@@ -35,20 +35,26 @@ void step(struct GridGeom *G, struct FluidState *S)
   FLAG("Start step");
 
   // Predictor setup
+#if ELECTRONS
   cool_electrons(G, S);
+#endif
   advance_fluid(G, S, S, Stmp, 0.5*dt);
   FLAG("Advance Fluid Tmp");
 #if ELECTRONS
+#if HEATING
   heat_electrons(G, S, Stmp);
   FLAG("Heat Electrons Tmp");
+#endif
 #endif
 
   // Fixup routines: smooth over outlier zones
   fixup(G, Stmp);
   FLAG("Fixup Tmp");
 #if ELECTRONS
+#if HEATING
   fixup_electrons(Stmp);
   FLAG("Fixup e- Tmp");
+#endif
 #endif
   set_bounds(G, Stmp);
   FLAG("First bounds Tmp");
@@ -59,19 +65,25 @@ void step(struct GridGeom *G, struct FluidState *S)
 
   // Corrector step
   double ndt = advance_fluid(G, S, Stmp, S, dt);
+#if ELECTRONS
   cool_electrons(G, S);
+#endif
   FLAG("Advance Fluid Full");
 
 #if ELECTRONS
+#if HEATING
   heat_electrons(G, Stmp, S);
   FLAG("Heat Electrons Full");
+#endif
 #endif
 
   fixup(G, S);
   FLAG("Fixup Full");
 #if ELECTRONS
+#if HEATING
   fixup_electrons(S);
   FLAG("Fixup e- Full");
+#endif
 #endif
   set_bounds(G, S);
   FLAG("First bounds Full");

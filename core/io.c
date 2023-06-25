@@ -34,10 +34,14 @@ void dump_backend(struct GridGeom *G, struct FluidState *S, int type)
   // Set prim names
   // Not writing it out though
   #if ELECTRONS
+  #if HEATING
   #if ALLMODELS
   const char varNames[NVAR][STRLEN] = {"RHO", "UU", "U1", "U2", "U3", "B1", "B2", "B3", "KTOT", "KEL0", "KEL1", "KEL2", "KEL3"};
   #else
   const char varNames[NVAR][STRLEN] = {"RHO", "UU", "U1", "U2", "U3", "B1", "B2", "B3", "KTOT", "KEL0"};
+  #endif
+  #else
+  const char varNames[NVAR][STRLEN] = {"RHO", "UU", "U1", "U2", "U3", "B1", "B2", "B3", "KTOT"};
   #endif
   #else
   const char varNames[NVAR][STRLEN] = {"RHO", "UU", "U1", "U2", "U3", "B1", "B2", "B3"};
