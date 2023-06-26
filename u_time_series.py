@@ -199,7 +199,8 @@ prims = initial_prims(min_r, min_th)
 for i in range(201): 
 	numerical(i, uarr_num, tarr_num, min_r, min_th)
 	analytical(i, uarr_ana, tarr_ana, min_r, min_th, prims)
-fig1 = plt.fig()
+
+fig1 = plt.figure()
 plt.plot(tarr_ana, uarr_ana, 'b')
 plt.plot(tarr_num, uarr_num, 'ro')
 plt.xticks(range(0, 201, 50))
@@ -209,7 +210,7 @@ plt.title("numerical->red, analytical->blue")
 plt.savefig(os.path.join(outputdir,'u_vs_t'))
 plt.close()
 
-fig2 = plt.fig()
+fig2 = plt.figure()
 plt.plot(tarr_ana, abs(uarr_ana-uarr_num), 'b')
 plt.xticks(range(0, 201, 50))
 plt.xlabel("time")
