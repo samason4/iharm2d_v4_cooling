@@ -199,7 +199,7 @@ for i in range(201):
 
 fig1 = plt.figure()
 plt.plot(tarr_ana, uarr_ana, 'b')
-plt.plot(tarr_num, uarr_num, 'ro')
+plt.plot(tarr_num, uarr_num, 'r.')
 plt.xticks(range(0, 201, 50))
 plt.xlabel("time")
 plt.ylabel("electron internal energy")
