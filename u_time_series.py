@@ -90,7 +90,7 @@ def initial_prims(min_r, min_th):
 	u = rho**game*np.exp(kel0*(game-1))
 	return [alpha, u]
 
-def ucon_calc(int min_r, int min_th, int ndim):
+def ucon_calc(min_r, min_th, ndim):
 	# reading grid file
 	grid = np.loadtxt(os.path.join(dumpsdir,'grid'))
 	gcov = grid[:,24:].reshape((n1, n2, ndim, ndim))
