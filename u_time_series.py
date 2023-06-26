@@ -76,8 +76,6 @@ def initial_prims(min_r, min_th):
 			t = float(firstline[29])
 
 	t = '{:.3f}'.format(t)
-
-	print("finding inital primatives...")
 	
 	# loading prims
 	prims = np.loadtxt(os.path.join(dumpsdir,'dump_0000{0:04d}'.format(0000)),skiprows=1)
@@ -97,7 +95,7 @@ def ucon_calc(min_r, min_th, n1, n2, ndim):
 	lapse = grid[:,7].reshape((n1,n2))
 
 	# loading prims
-	prims1 = np.loadtxt(os.path.join(dumpsdir,'dump_0000{0:04d}'.format(dumpno)),skiprows=1)
+	prims1 = np.loadtxt(os.path.join(dumpsdir,'dump_0000{0:04d}'.format(0000)),skiprows=1)
 	u1 = prims1[:,2].reshape(n1,n1)[min_r][min_th]
 	u2 = prims1[:,3].reshape(n1,n1)[min_r][min_th]
 	u3 = prims1[:,4].reshape(n1,n1)[min_r][min_th]
