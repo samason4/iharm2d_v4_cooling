@@ -103,8 +103,7 @@ def ucon_calc(min_r, min_th, ndim):
 	u3 = prims1[:,4].reshape(n1,n1)[min_r][min_th]
 
 	# calculating ut
-	qsq = gcov[min_r][min_th][1][1]*u1*u1+gcov[min_r][min_th][2][2]*u2*u2+gcov[min_r][min_th][3][3]*u3*u3
-		+2*(gcov[min_r][min_th][1][2]*u1*u2+gcov[min_r][min_th][1][3]*u1*u3+gcov[min_r][min_th][2][3]*u2*u3)
+	qsq = gcov[min_r][min_th][1][1]*u1*u1+gcov[min_r][min_th][2][2]*u2*u2+gcov[min_r][min_th][3][3]*u3*u3+2*(gcov[min_r][min_th][1][2]*u1*u2+gcov[min_r][min_th][1][3]*u1*u3+gcov[min_r][min_th][2][3]*u2*u3)
 	gamma = (1+qsq)**(0.5)
 	ut = gamma/lapse[min_r][min_th]
 	return ut
