@@ -138,7 +138,7 @@ def numerical(dumpno, uarr, tarr, min_r, min_th):
 
 	t = '{:.3f}'.format(t)
 
-	print(dumpno, "numerical")
+	print("finding numerical solution at dump #", dumpno)
 	
 	# loading prims
 	prims = np.loadtxt(os.path.join(dumpsdir,'dump_0000{0:04d}'.format(dumpno)),skiprows=1)
@@ -177,12 +177,11 @@ def analytical(dumpno, uarr, tarr, min_r, min_th, prims):
 
 	t = '{:.3f}'.format(t)
 
-	print(dumpno, "analytical")
+	print("finding analytical solution at dump #", dumpno)
 	
 	# adding u and t
 	alpha = prims[0]
 	u0 = prims[1]
-	print("u0 type: ", type(u0), ", alpha type: ", type(alpha), ", t type: ", type(float(t)))
 	u = u0*np.exp(alpha*float(t))
 	uarr.append(u)
 	tarr.append(t)
