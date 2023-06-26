@@ -180,8 +180,10 @@ def analytical(dumpno, uarr, tarr, min_r, min_th, prims):
 	print(dumpno, "analytical")
 	
 	# adding u and t
+	alpha = prims[0]
+	u0 = prims[1]
 	print("prims[0]: ", prims[0], " prims[1]: ", prims[1], " t: ", t)
-	u = prims[1]*np.exp(prims[0]*t)
+	u = u0*np.exp(alpha*t)
 	uarr.append(u)
 	tarr.append(t)
 
