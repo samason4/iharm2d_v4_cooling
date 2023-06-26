@@ -137,8 +137,6 @@ def numerical(dumpno, uarr, tarr, min_r, min_th):
 			t = float(firstline[29])
 
 	t = '{:.3f}'.format(t)
-
-	print("finding numerical solution at dump #", dumpno)
 	
 	# loading prims
 	prims = np.loadtxt(os.path.join(dumpsdir,'dump_0000{0:04d}'.format(dumpno)),skiprows=1)
@@ -176,8 +174,6 @@ def analytical(dumpno, uarr, tarr, min_r, min_th, prims):
 			t = float(firstline[29])
 
 	t = '{:.3f}'.format(t)
-
-	print("finding analytical solution at dump #", dumpno)
 	
 	# adding u and t
 	alpha = prims[0]
@@ -191,11 +187,12 @@ uarr_num = []
 tarr_num = []
 uarr_ana = []
 tarr_ana = []
+diff = []
 mins = find_indices()
 min_r = mins[0]
 min_th = mins[1]
-print(mins)
 prims = initial_prims(min_r, min_th)
+print("finding numerical and analytical solutions...")
 for i in range(201): 
 	numerical(i, uarr_num, tarr_num, min_r, min_th)
 	analytical(i, uarr_ana, tarr_ana, min_r, min_th, prims)
@@ -210,8 +207,11 @@ plt.title("numerical->red, analytical->blue")
 plt.savefig(os.path.join(outputdir,'u_vs_t'))
 plt.close()
 
+print("finding the error...")
+for i in range(201):
+	diff.append(abs(uarr_num[i]-uarr_ana[i]))
 fig2 = plt.figure()
-plt.plot(tarr_ana, abs(uarr_ana-uarr_num), 'b')
+plt.plot(tarr_ana, diff, 'b')
 plt.xticks(range(0, 201, 50))
 plt.xlabel("time")
 plt.ylabel("error")
