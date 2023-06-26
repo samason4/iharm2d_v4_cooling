@@ -198,7 +198,7 @@ for i in range(201):
 	analytical(i, uarr_ana, tarr_ana, min_r, min_th, prims)
 
 fig1 = plt.figure()
-plt.plot(tarr_ana, uarr_ana, 'b')
+plt.plot(tarr_ana, uarr_ana, 'bo')
 plt.plot(tarr_num, uarr_num, 'r.')
 plt.xticks(range(0, 201, 50))
 plt.xlabel("time")
