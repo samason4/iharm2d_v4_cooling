@@ -183,7 +183,7 @@ def analytical(dumpno, uarr, tarr, min_r, min_th, prims):
 	alpha = prims[0]
 	u0 = prims[1]
 	print("u0 type: ", type(u0), ", alpha type: ", type(alpha), ", t type: ", type(float(t)))
-	u = u0*np.exp(alpha*t)
+	u = u0*np.exp(alpha*float(t))
 	uarr.append(u)
 	tarr.append(float(t))
 
