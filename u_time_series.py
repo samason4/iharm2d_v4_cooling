@@ -196,7 +196,7 @@ print(mins)
 prims = initial_prims(min_r, min_th)
 for i in range(201): 
 	numerical(i, uarr_num, tarr_num, min_r, min_th)
-	analytical(i, uarr_ana, tarr_ana, min_r, min_th)
+	analytical(i, uarr_ana, tarr_ana, min_r, min_th, prims)
 plt.plot(tarr_ana, uarr_ana, 'b')
 plt.plot(tarr_num, uarr_num, 'r')
 plt.xticks(range(0, 201, 50))
