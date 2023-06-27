@@ -287,9 +287,9 @@ errors.append(error384)
 resolutions.append(384)
 
 #this part is just for the comparison line:
-temp_res = 100
-temp_x = 1e-2
-for i in range(25):
+temp_res = 90
+temp_x = 9.5e-1
+for i in range(27):
     temp_res += 12
     x.append(temp_x*temp_res**(-2))
     res.append(temp_res)
