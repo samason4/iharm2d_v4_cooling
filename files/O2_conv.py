@@ -4,6 +4,7 @@ import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 from matplotlib import gridspec
+from matplotlib import ticker
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 import multiprocessing as mp
 
@@ -331,11 +332,15 @@ for i in range(27):
     res.append(temp_res)
 
 #actually plotting:
-fig1 = plt.figure()
-plt.loglog(resolutions, errors, 'bo')
-plt.loglog(res, x, 'r')
+fig1, sub1 = plt.subplots()
+sub1.loglog(resolutions, errors, color = 'blue' label = 'error of test cooling')
+sub1.loglog(res, x, color = 'red', label = 'line of slope N^(-2) for comparison')
+sub1.loglog(resolutions, errors, 'bo')
+ax.set_yticks(y)
+ax.set_yticklabels([f"$2^{i}$" for i in range(-22, -16)])
 plt.xlabel("resolution")
 plt.ylabel("total error")
 plt.title("error vs resolution")
+plt.legend()
 plt.savefig(os.path.join(outputdir96,'error_vs_resolution'))
 plt.close()
