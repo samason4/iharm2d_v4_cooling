@@ -332,16 +332,17 @@ for i in range(27):
 
 #actually plotting:
 fig1, sub1 = plt.subplots()
-sub1.loglog(resolutions, errors, color = 'blue', label = 'error of test cooling')
-sub1.loglog(res, x, color = 'red', label = 'line of slope N^(-2) for comparison')
+sub1.loglog(resolutions, errors, color = 'blue', label = 'Error of Test Cooling')
+sub1.loglog(res, x, color = 'red', label = 'Line of Slope N^(-2) for Comparison')
 sub1.loglog(resolutions, errors, 'bo')
 sub1.set_yscale('log')
 sub1.set_yticks([2**-22, 2**-21, 2**-20, 2**-19, 2**-18, 2**-17, 2**-16])
 def log_formatter(x, pos):
     return f"2^{int(-pos)}"
 sub1.get_yaxis().set_major_formatter(matplotlib.ticker.FuncFormatter(log_formatter))
-plt.ylabel("total error")
-plt.title("error vs resolution")
+plt.ylabel("Total Error")
+plt.xlabel("Resolution")
+plt.title("Error vs Resolution")
 plt.legend()
 plt.savefig(os.path.join(outputdir96,'error_vs_resolution'))
 plt.close()
