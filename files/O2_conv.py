@@ -337,8 +337,9 @@ sub1.loglog(res, x, color = 'red', label = 'line of slope N^(-2) for comparison'
 sub1.loglog(resolutions, errors, 'bo')
 sub1.set_yscale('log')
 sub1.set_yticks([2**-22, 2**-21, 2**-20, 2**-19, 2**-18, 2**-17, 2**-16])
-sub1.get_yaxis().set_major_formatter(matplotlib.ticker.ScalarFormatter())
-plt.xlabel("resolution")
+def log_formatter(x, pos):
+    return f"2^-{int(-pos)}"
+sub1.get_yaxis().set_major_formatter(matplotlib.ticker.FuncFormatter(log_formatter))
 plt.ylabel("total error")
 plt.title("error vs resolution")
 plt.legend()
