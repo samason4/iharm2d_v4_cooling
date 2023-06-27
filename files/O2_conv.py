@@ -335,10 +335,10 @@ fig1, sub1 = plt.subplots()
 sub1.loglog(resolutions, errors, color = 'blue', label = 'Error of Test Cooling')
 sub1.loglog(res, x, color = 'red', label = 'Line of Slope N^(-2) for Comparison')
 sub1.loglog(resolutions, errors, 'bo')
-#sub1.set_xscale('log')
-#sub1.set_xticks([2**6, 2**7, 2**8, 2**9])
-def log_formatter(x, pos):
-    return f"2^{int(-pos)}"
+sub1.set_xscale('log')
+sub1.set_xticks([2**6, 2**7, 2**8, 2**9])
+def log_formatter(resolutions, pos):
+    return f"2^{int(pos)}"
 sub1.get_xaxis().set_major_formatter(matplotlib.ticker.FuncFormatter(log_formatter))
 plt.ylabel("Total Error")
 plt.xlabel("Resolution")
