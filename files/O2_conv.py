@@ -230,7 +230,7 @@ for i in range(10):
 	for i in range(19):
 		error += abs(uarr_num[i]-uarr_ana[i])
 	error = error/20
-	errors96_temp.append(error96)
+	errors96_temp.append(error)
 error96 = 0
 for i in range(10):
 	error96 += abs(errors96_temp[i])
@@ -258,7 +258,7 @@ for i in range(10):
 	for i in range(19):
 		error += abs(uarr_num[i]-uarr_ana[i])
 	error = error/20
-	errors128_temp.append(error128)
+	errors128_temp.append(error)
 error128 = 0
 for i in range(10):
 	error128 += abs(errors128_temp[i])
@@ -286,7 +286,7 @@ for i in range(10):
 	for i in range(19):
 		error += abs(uarr_num[i]-uarr_ana[i])
 	error = error/20
-	errors256_temp.append(error256)
+	errors256_temp.append(error)
 error256 = 0
 for i in range(10):
 	error256 += abs(errors256_temp[i])
@@ -314,7 +314,7 @@ for i in range(10):
 	for i in range(19):
 		error += abs(uarr_num[i]-uarr_ana[i])
 	error = error/20
-	errors384_temp.append(error384)
+	errors384_temp.append(error)
 error384 = 0
 for i in range(10):
 	error384 += abs(errors384_temp[i])
