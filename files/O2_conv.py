@@ -251,7 +251,7 @@ for i in range(10):
 	mins = find_indices(dumpsdir128, 12 + i*2, np.pi/2)
 	min_r = mins[0]
 	min_th = mins[1]
-	prims = initial_prims(min_r, min_th, dumpsdir96)
+	prims = initial_prims(min_r, min_th, dumpsdir128)
 	for i in range(181, 201): 
 		numerical(i, uarr_num, tarr_num, min_r, min_th, dumpsdir128)
 		analytical(i, uarr_ana, tarr_ana, min_r, min_th, prims, dumpsdir128)
