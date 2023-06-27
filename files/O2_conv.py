@@ -8,7 +8,7 @@ from mpl_toolkits.axes_grid1 import make_axes_locatable
 import multiprocessing as mp
 
 #to call this function (from iharm2d_v4_cooling directory):
-# python3 files/O2_conv.py ./ ./dumps96 ./dumps128 ./dumps256 ./dumps384
+# python files/O2_conv.py ./ ./dumps96 ./dumps128 ./dumps256 ./dumps384
 
 # paths to 96x96 dumps
 dumpsdir96 = sys.argv[2] #second argument when you call the function (in the long email plot_density this is the "./dumps")
@@ -324,7 +324,7 @@ resolutions.append(384)
 
 #this part is just for the comparison line:
 temp_res = 90
-temp_x = 9e-3
+temp_x = 2e-2
 for i in range(27):
     temp_res += 12
     x.append(temp_x*temp_res**(-2))
