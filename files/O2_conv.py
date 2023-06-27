@@ -324,7 +324,7 @@ resolutions.append(384)
 
 #this part is just for the comparison line:
 temp_res = 90
-temp_x = 2e-2
+temp_x = 4e-2
 for i in range(27):
     temp_res += 12
     x.append(temp_x*temp_res**(-2))
