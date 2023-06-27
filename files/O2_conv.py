@@ -333,7 +333,7 @@ for i in range(27):
 
 #actually plotting:
 fig1, sub1 = plt.subplots()
-sub1.loglog(resolutions, errors, color = 'blue' label = 'error of test cooling')
+sub1.loglog(resolutions, errors, color = 'blue', label = 'error of test cooling')
 sub1.loglog(res, x, color = 'red', label = 'line of slope N^(-2) for comparison')
 sub1.loglog(resolutions, errors, 'bo')
 ax.set_yticks(y)
