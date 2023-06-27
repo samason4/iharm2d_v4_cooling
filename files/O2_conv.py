@@ -35,7 +35,7 @@ if not os.path.exists(outputdir384):
 	os.makedirs(outputdir384)
 
 #function that finds the indices:
-def find_indices(dumpsdir):
+def find_indices(dumpsdir, r_want, th_want):
 
 	# header info
 	header = open(os.path.join(dumpsdir,'dump_0000{0:04d}'.format(0)),'r')
@@ -69,8 +69,8 @@ def find_indices(dumpsdir):
 	th = grid[:,3].reshape((n1,n2))
 
 	#find the right indices
-	min_r  = np.argmin(np.fabs(r[:,0] - 12))
-	min_th = np.argmin(np.fabs(th[min_r,:] - np.pi/2))
+	min_r  = np.argmin(np.fabs(r[:,0] - r_want))
+	min_th = np.argmin(np.fabs(th[min_r,:] - th_want))
 	return [min_r, min_th]
 
 def initial_prims(min_r, min_th, dumpsdir):
@@ -211,84 +211,120 @@ x = []
 res = []
 
 #finding errors for dump 96:
-uarr96_num = []
-tarr96_num = []
-uarr96_ana = []
-tarr96_ana = []
+errors96_temp = []
+for i in range(10):
+	perc = i*2.5
+	print(perc, "percent done")
+	uarr_num = []
+	tarr_num = []
+	uarr_ana = []
+	tarr_ana = []
+	error = 0
+	mins = find_indices(dumpsdir96, 12 + i*2)
+	min_r = mins[0]
+	min_th = mins[1]
+	prims = initial_prims(min_r, min_th, dumpsdir96)
+	for i in range(181, 201): 
+		numerical(i, uarr_num, tarr_num, min_r, min_th, dumpsdir96)
+		analytical(i, uarr_ana, tarr_ana, min_r, min_th, prims, dumpsdir96)
+	for i in range(19):
+		error += abs(uarr_num[i]-uarr_ana[i])
+	error = error/20
+	errors96_temp.append(error96)
 error96 = 0
-mins96 = find_indices(dumpsdir96)
-min96_r = mins96[0]
-min96_th = mins96[1]
-prims96 = initial_prims(min96_r, min96_th, dumpsdir96)
-for i in range(181, 201): 
-	numerical(i, uarr96_num, tarr96_num, min96_r, min96_th, dumpsdir96)
-	analytical(i, uarr96_ana, tarr96_ana, min96_r, min96_th, prims96, dumpsdir96)
-for i in range(19):
-	error96 += abs(uarr96_num[i]-uarr96_ana[i])
-error96 = error96/20
+for i in range(10):
+	error96 += abs(errors96_temp[i])
+error96 = error96/11
 errors.append(error96)
 resolutions.append(96)
 
 #finding errors for dump 128:
-uarr128_num = []
-tarr128_num = []
-uarr128_ana = []
-tarr128_ana = []
+errors128_temp = []
+for i in range(10):
+	perc = i*2.5 + 25
+	print(perc, "percent done")
+	uarr_num = []
+	tarr_num = []
+	uarr_ana = []
+	tarr_ana = []
+	error = 0
+	mins = find_indices(dumpsdir128, 12 + i*2)
+	min_r = mins[0]
+	min_th = mins[1]
+	prims = initial_prims(min_r, min_th, dumpsdir96)
+	for i in range(181, 201): 
+		numerical(i, uarr_num, tarr_num, min_r, min_th, dumpsdir128)
+		analytical(i, uarr_ana, tarr_ana, min_r, min_th, prims, dumpsdir128)
+	for i in range(19):
+		error += abs(uarr_num[i]-uarr_ana[i])
+	error = error/20
+	errors128_temp.append(error128)
 error128 = 0
-mins128 = find_indices(dumpsdir128)
-min128_r = mins128[0]
-min128_th = mins128[1]
-prims128 = initial_prims(min128_r, min128_th, dumpsdir128)
-for i in range(181, 201): 
-	numerical(i, uarr128_num, tarr128_num, min128_r, min128_th, dumpsdir128)
-	analytical(i, uarr128_ana, tarr128_ana, min128_r, min128_th, prims128, dumpsdir128)
-for i in range(19):
-	error128 += abs(uarr128_num[i]-uarr128_ana[i])
-error128 = error128/20
+for i in range(10):
+	error128 += abs(errors128_temp[i])
+error128 = error128/11
 errors.append(error128)
 resolutions.append(128)
 
 #finding errors for dump 256:
-uarr256_num = []
-tarr256_num = []
-uarr256_ana = []
-tarr256_ana = []
+errors256_temp = []
+for i in range(10):
+	perc = i*2.5 + 50
+	print(perc, "percent done")
+	uarr_num = []
+	tarr_num = []
+	uarr_ana = []
+	tarr_ana = []
+	error = 0
+	mins = find_indices(dumpsdir256, 12 + i*2)
+	min_r = mins[0]
+	min_th = mins[1]
+	prims = initial_prims(min_r, min_th, dumpsdir256)
+	for i in range(181, 201): 
+		numerical(i, uarr_num, tarr_num, min_r, min_th, dumpsdir256)
+		analytical(i, uarr_ana, tarr_ana, min_r, min_th, prims, dumpsdir256)
+	for i in range(19):
+		error += abs(uarr_num[i]-uarr_ana[i])
+	error = error/20
+	errors256_temp.append(error256)
 error256 = 0
-mins256 = find_indices(dumpsdir256)
-min256_r = mins256[0]
-min256_th = mins256[1]
-prims256 = initial_prims(min256_r, min256_th, dumpsdir256)
-for i in range(181, 201): 
-	numerical(i, uarr256_num, tarr256_num, min256_r, min256_th, dumpsdir256)
-	analytical(i, uarr256_ana, tarr256_ana, min256_r, min256_th, prims256, dumpsdir256)
-for i in range(19):
-	error256 += abs(uarr256_num[i]-uarr256_ana[i])
-error256 = error256/20
+for i in range(10):
+	error256 += abs(errors256_temp[i])
+error256 = error256/11
 errors.append(error256)
 resolutions.append(256)
 
 #finding errors for dump 384:
-uarr384_num = []
-tarr384_num = []
-uarr384_ana = []
-tarr384_ana = []
+errors384_temp = []
+for i in range(10):
+	perc = i*2.5 + 75
+	print(perc, "percent done")
+	uarr_num = []
+	tarr_num = []
+	uarr_ana = []
+	tarr_ana = []
+	error = 0
+	mins = find_indices(dumpsdir384, 12 + i*2)
+	min_r = mins[0]
+	min_th = mins[1]
+	prims = initial_prims(min_r, min_th, dumpsdir384)
+	for i in range(181, 201): 
+		numerical(i, uarr_num, tarr_num, min_r, min_th, dumpsdir384)
+		analytical(i, uarr_ana, tarr_ana, min_r, min_th, prims, dumpsdir384)
+	for i in range(19):
+		error += abs(uarr_num[i]-uarr_ana[i])
+	error = error/20
+	errors384_temp.append(error384)
 error384 = 0
-mins384 = find_indices(dumpsdir384)
-min384_r = mins384[0]
-min384_th = mins384[1]
-prims384 = initial_prims(min384_r, min384_th, dumpsdir384)
-for i in range(181, 201): 
-	numerical(i, uarr384_num, tarr384_num, min384_r, min384_th, dumpsdir384)
-	analytical(i, uarr384_ana, tarr384_ana, min384_r, min384_th, prims384, dumpsdir384)
-for i in range(19):
-	error384 += abs(uarr384_num[i]-uarr384_ana[i])
-error384 = error384/20
+for i in range(10):
+	error384 += abs(errors384_temp[i])
+error384 = error384/11
 errors.append(error384)
 resolutions.append(384)
 
 #this part is just for the comparison line:
 temp_res = 90
-temp_x = 9.5e-3
+temp_x = 9e-3
 for i in range(27):
     temp_res += 12
     x.append(temp_x*temp_res**(-2))
