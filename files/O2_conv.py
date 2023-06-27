@@ -335,7 +335,13 @@ fig1, sub1 = plt.subplots()
 sub1.loglog(resolutions, errors, color = 'blue', label = 'Error of Test Cooling')
 sub1.loglog(res, x, color = 'red', label = 'Line of Slope N^(-2) for Comparison')
 sub1.loglog(resolutions, errors, 'bo')
-plt.xticks([2**6, 2**7, 2**7, 2**8], ['2^6', '2^7', '2^8', '2^9'])
+plt.tick_params(
+    axis='x',          # changes apply to the x-axis
+    which='both',      # both major and minor ticks are affected
+    bottom=False,      # ticks along the bottom edge are off
+    top=False,         # ticks along the top edge are off
+    labelbottom=False) # labels along the bottom edge are off
+plt.xticks([2**6, 2**7, 2**8, 2**9], ['2^6', '2^7', '2^8', '2^9'])
 plt.ylabel("Total Error")
 plt.xlabel("Resolution")
 plt.title("Error vs Resolution")
