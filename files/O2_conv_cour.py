@@ -35,7 +35,7 @@ if not os.path.exists(outputdir0625):
 	os.makedirs(outputdir0625)
 
 # paths to .03125 dumps
-dumpsdir03125 = sys.argv[5]
+dumpsdir03125 = sys.argv[6]
 outputdir03125 = sys.argv[1]
 if not os.path.exists(outputdir03125):
 	os.makedirs(outputdir03125)
