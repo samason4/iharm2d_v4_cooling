@@ -8,7 +8,7 @@ from mpl_toolkits.axes_grid1 import make_axes_locatable
 import multiprocessing as mp
 
 #to call this function (from iharm2d_v4_cooling directory):
-# python files/O2_conv.py ./ ./dumps96 ./dumps128 ./dumps256 ./dumps384
+# python files/O2_conv_res.py ./ ./dumps96 ./dumps128 ./dumps256 ./dumps384
 
 # paths to 96x96 dumps
 dumpsdir96 = sys.argv[2] #second argument when you call the function (in the long email plot_density this is the "./dumps")
