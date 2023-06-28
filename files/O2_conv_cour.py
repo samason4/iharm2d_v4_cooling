@@ -357,8 +357,8 @@ errors.append(error03125)
 resolutions.append(32)
 
 #this part is just for the comparison line:
-temp_res = 2
-temp_x = 3e-6
+temp_res = 1
+temp_x = 3e-3
 for i in range(15):
     temp_res += 2
     x.append(temp_x*temp_res**(-2))
