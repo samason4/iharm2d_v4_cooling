@@ -357,8 +357,8 @@ errors.append(error03125)
 resolutions.append(32)
 
 #this part is just for the comparison line:
-temp_res = 90
-temp_x = 7e-2
+temp_res = 2
+temp_x = 3e-6
 for i in range(27):
     temp_res += 12
     x.append(temp_x*temp_res**(-2))
@@ -367,7 +367,7 @@ for i in range(27):
 #actually plotting:
 fig1, sub1 = plt.subplots()
 sub1.loglog(resolutions, errors, color = 'blue', label = 'Error of Test Cooling')
-#sub1.loglog(res, x, color = 'red', label = 'Line of Slope N^-2 for Comparison')
+sub1.loglog(res, x, color = 'red', label = 'Line of Slope N^-2 for Comparison')
 sub1.loglog(resolutions, errors, 'bo')
 plt.xticks([], [])
 sub1.set_xticks([])
