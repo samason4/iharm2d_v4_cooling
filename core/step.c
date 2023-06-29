@@ -110,8 +110,9 @@ void step(struct GridGeom *G, struct FluidState *S)
     dt = SAFE * dt;
   else
     dt = ndt;
-}
 */
+}
+
 
 inline double advance_fluid(struct GridGeom *G, struct FluidState *Si, struct FluidState *Ss, struct FluidState *Sf, double Dt)
 {
