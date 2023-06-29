@@ -312,5 +312,5 @@ double bsq = 0.;//in this function the original return was just bsq
   DLOOP1
     bsq += S->bcon[mu][j][i]*S->bcov[mu][j][i];
   
-  return bsq //MY_MAX(bsq, SMALL);
+  return bsq; //MY_MAX(bsq, SMALL);
 }
