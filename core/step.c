@@ -104,14 +104,11 @@ void step(struct GridGeom *G, struct FluidState *S)
     current_calc(G, S, Ssave, dt);
   }
 
-/*
   // Set next timestep
   if (ndt > SAFE * dt)
     dt = SAFE * dt;
   else
     dt = ndt;
-*/
-  dt = ndt;
 }
 
 
