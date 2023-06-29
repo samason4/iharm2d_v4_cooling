@@ -111,6 +111,7 @@ void step(struct GridGeom *G, struct FluidState *S)
   else
     dt = ndt;
 */
+  dt = ndt;
 }
 
 
