@@ -7,7 +7,7 @@
 
 # FLUID
 [dbl] gam = 1.333333
-[dbl] cour = 2.0
+[dbl] cour = 1.415 #only a little larger than the square root of two
 
 [dbl] u_jitter = 4.0e-02
 
