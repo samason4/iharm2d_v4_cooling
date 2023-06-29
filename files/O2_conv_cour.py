@@ -8,14 +8,14 @@ from mpl_toolkits.axes_grid1 import make_axes_locatable
 import multiprocessing as mp
 
 #to call this function (from iharm2d_v4_cooling directory):
-# python files/O2_conv_cour.py ./ ./cour=0.5_dumps ./cour=0.25_dumps ./cour=0.125_dumps ./cour=0.0625_dumps ./cour=0.03125_dumps
+# python files/O2_conv_cour.py ./ ./cour=0.5_dumps ./cour=0.0625_dumps
 
 # paths to .5 dumps
 dumpsdir5 = sys.argv[2] #second argument when you call the function (in the long email plot_density this is the "./dumps")
 outputdir5 = sys.argv[1] #third argument when you call the function (in the long email plot_density this is the "./"), etc
 if not os.path.exists(outputdir5):
 	os.makedirs(outputdir5)
-
+"""
 # paths to .25 dumps
 dumpsdir25 = sys.argv[3]
 outputdir25 = sys.argv[1]
@@ -27,20 +27,20 @@ dumpsdir125 = sys.argv[4]
 outputdir125 = sys.argv[1]
 if not os.path.exists(outputdir125):
 	os.makedirs(outputdir125)
-
+"""
 # paths to .0625 dumps
-dumpsdir0625 = sys.argv[5]
+dumpsdir0625 = sys.argv[3] #temp 3 instead of 4
 outputdir0625 = sys.argv[1]
 if not os.path.exists(outputdir0625):
 	os.makedirs(outputdir0625)
-
+"""
 # paths to .03125 dumps
 dumpsdir03125 = sys.argv[6]
 outputdir03125 = sys.argv[1]
 if not os.path.exists(outputdir03125):
 	os.makedirs(outputdir03125)
+"""
 
-#function that finds the indices:
 def find_indices(dumpsdir, r_want, th_want):
 
 	# header info
@@ -244,6 +244,7 @@ error5 = error5/11
 errors.append(error5)
 resolutions.append(2)
 
+"""
 #finding error for the .25 run:
 errors25_temp = []
 for i in range(10):
@@ -299,6 +300,7 @@ for i in range(10):
 error125 = error125/11
 errors.append(error125)
 resolutions.append(8)
+"""
 
 #finding error for the .0625 run:
 errors0625_temp = []
@@ -328,6 +330,7 @@ error0625 = error0625/11
 errors.append(error0625)
 resolutions.append(16)
 
+"""
 #finding error for the .03125 run:
 errors03125_temp = []
 for i in range(10):
@@ -355,7 +358,7 @@ for i in range(10):
 error03125 = error03125/11
 errors.append(error03125)
 resolutions.append(32)
-
+"""
 #this part is just for the comparison line:
 temp_res = 1
 temp_x = 3e-3
@@ -372,7 +375,7 @@ sub1.loglog(resolutions, errors, 'bo')
 plt.xticks([], [])
 sub1.set_xticks([])
 sub1.set_xticks([], minor=True)
-sub1.set_xticks([2, 4, 8, 16, 32], ['2^1','2^2', '2^3', '2^4', '2^5'])
+sub1.set_xticks([2, 4, 8, 16], ['2^1','2^2', '2^3', '2^4'])
 plt.ylabel("Total Error")
 plt.xlabel("1 / The Courant Number")
 plt.title("Error vs 1/Courant Number at 96x96 resolution")
