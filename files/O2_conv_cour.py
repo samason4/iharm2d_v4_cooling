@@ -248,6 +248,8 @@ errors = []
 cour_inv = []
 x = []
 res = []
+x2 = []
+res2 = []
 
 #finding errors:
 find_error(dumpsdir7, 0.7, 12, np.pi/2, errors, cour_inv)
@@ -266,10 +268,18 @@ for i in range(12):
     res.append(temp_res)
     temp_res += 2
 
+temp_res2 = 1
+temp_x2 = 1e-6
+for i in range(12):
+    x2.append(temp_x2*temp_res2**(-1))
+    res2.append(temp_res2)
+    temp_res2 += 2
+
 #actually plotting:
 fig1, sub1 = plt.subplots()
 sub1.loglog(cour_inv, errors, color = 'blue', label = 'Error of Test Cooling')
 sub1.loglog(res, x, color = 'red', label = 'Line of Slope N^-2 for Comparison')
+sub1.loglog(res2, x2, color = 'g', label = 'Line of Slope N^-1 for Comparison')
 sub1.loglog(cour_inv, errors, 'bo')
 plt.xticks([], [])
 sub1.set_xticks([])
