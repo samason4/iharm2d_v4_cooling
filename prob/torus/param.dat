@@ -7,9 +7,9 @@
 
 # FLUID
 [dbl] gam = 1.333333
-[dbl] cour = 1.5 // just less than the square root of 2
+[dbl] cour = 1.5
 
-[dbl] u_jitter = 0 //4.0e-02
+[dbl] u_jitter = 4.0e-02
 
 # OUTPUT
 [dbl] DTd = 5.0
