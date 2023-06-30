@@ -39,7 +39,7 @@ dumpsdir125 = sys.argv[4]
 outputdir125 = sys.argv[1]
 if not os.path.exists(outputdir125):
 	os.makedirs(outputdir125)
-"""
+
 	
 # paths to .0625 dumps
 dumpsdir0625 = sys.argv[5] #temp 3 instead of 4
@@ -47,7 +47,7 @@ outputdir0625 = sys.argv[1]
 if not os.path.exists(outputdir0625):
 	os.makedirs(outputdir0625)
 
-"""
+
 # paths to .03125 dumps
 dumpsdir03125 = sys.argv[6]
 outputdir03125 = sys.argv[1]
@@ -257,7 +257,7 @@ find_error(dumpsdir5, 0.5, 12, np.pi/2, errors, cour_inv)
 find_error(dumpsdir4, 0.4, 12, np.pi/2, errors, cour_inv)
 #find_error(dumpsdir25, 0.25, 12, np.pi/2, errors, cour_inv)
 #find_error(dumpsdir125, 0.125, 12, np.pi/2, errors, cour_inv)
-find_error(dumpsdir0625, 0.0625, 12, np.pi/2, errors, cour_inv)
+#find_error(dumpsdir0625, 0.0625, 12, np.pi/2, errors, cour_inv)
 #find_error(dumpsdir03125, 0.03125, 12, np.pi/2, errors, cour_inv)
 
 #this part is just for the comparison line:
@@ -270,7 +270,7 @@ for i in range(12):
 
 temp_res2 = 1
 temp_x2 = 1e-6
-for i in range(12):
+for i in range(3):
     x2.append(temp_x2*temp_res2**(-1))
     res2.append(temp_res2)
     temp_res2 += 2
@@ -284,7 +284,7 @@ sub1.loglog(cour_inv, errors, 'bo')
 plt.xticks([], [])
 sub1.set_xticks([])
 sub1.set_xticks([], minor=True)
-sub1.set_xticks([1, 2, 4, 8, 16], ['2^0', '2^1','2^2', '2^3', '2^4'])
+sub1.set_xticks([1, 2, 4], ['2^0', '2^1','2^2'])
 plt.ylabel("Total Error")
 plt.xlabel("1 / The Courant Number")
 plt.title("Error vs 1/Courant Number at 96x96 resolution")
