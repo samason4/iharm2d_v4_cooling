@@ -8,23 +8,23 @@ from mpl_toolkits.axes_grid1 import make_axes_locatable
 import multiprocessing as mp
 
 #to call this function (from iharm2d_v4_cooling directory):
-# python files/O2_conv_cour.py ./ ./dumps7 ./dumps5 ./dumps4
+# python files/O2_conv_cour.py ./ ./dumps7 ./dumps5 ./dumps4 ./dumps0625
 
 # paths to .5 dumps
-dumpsdir7 = sys.argv[2] #second argument when you call the function (in the long email plot_density this is the "./dumps")
-outputdir7 = sys.argv[1] #first argument when you call the function (in the long email plot_density this is the "./"), etc
+dumpsdir7 = sys.argv[2]
+outputdir7 = sys.argv[1]
 if not os.path.exists(outputdir7):
 	os.makedirs(outputdir7)
 
 # paths to .5 dumps
-dumpsdir5 = sys.argv[3] #third argument when you call the function (in the long email plot_density this is the "./dumps")
-outputdir5 = sys.argv[1] #furst argument when you call the function (in the long email plot_density this is the "./"), etc
+dumpsdir5 = sys.argv[3]
+outputdir5 = sys.argv[1]
 if not os.path.exists(outputdir5):
 	os.makedirs(outputdir5)
 
 # paths to .4 dumps
-dumpsdir4 = sys.argv[4] #fourth argument when you call the function (in the long email plot_density this is the "./dumps")
-outputdir4 = sys.argv[1] #furst argument when you call the function (in the long email plot_density this is the "./"), etc
+dumpsdir4 = sys.argv[4]
+outputdir4 = sys.argv[1]
 if not os.path.exists(outputdir4):
 	os.makedirs(outputdir4)
 """
@@ -224,211 +224,40 @@ def analytical(dumpno, uarr, tarr, min_r, min_th, prims, dumpsdir):
 	uarr.append(u)
 	tarr.append(t)
 
+def find_error(dumpsdir, cour, want_r, want_th, errors, cour_inv):
+	error = 0
+	uarr_num = []
+	tarr_num = []
+	uarr_ana = []
+	tarr_ana = []
+	mins = find_indices(dumpsdir, want_r, want_th)
+	min_r = mins[0]
+	min_th = mins[1]
+	prims = initial_prims(min_r, min_th, dumpsdir)
+	for i in range(181, 201): #looping over time
+		numerical(i, uarr_num, tarr_num, min_r, min_th, dumpsdir)
+		analytical(i, uarr_ana, tarr_ana, min_r, min_th, prims, dumpsdir)
+	for i in range(20):
+		error += abs(uarr_num[i]-uarr_ana[i])
+	error = error/20
+	errors.append(error)
+	cour_inv.append(1/cour)
+
 # these are the arrays I will plot:
 errors = []
-resolutions = []
+cour_inv = []
 x = []
 res = []
 
-#finding error for the .7 run:
-errors7_temp = []
-for i in range(10):
-	perc = i*2
-	print(perc, "percent done")
-	uarr_num = []
-	tarr_num = []
-	uarr_ana = []
-	tarr_ana = []
-	error = 0
-	mins = find_indices(dumpsdir7, 12 + i*2, np.pi/2)
-	min_r = mins[0]
-	min_th = mins[1]
-	prims = initial_prims(min_r, min_th, dumpsdir7)
-	for i in range(181, 201): 
-		numerical(i, uarr_num, tarr_num, min_r, min_th, dumpsdir7)
-		analytical(i, uarr_ana, tarr_ana, min_r, min_th, prims, dumpsdir7)
-	for i in range(19):
-		error += abs(uarr_num[i]-uarr_ana[i])
-	error = error/20
-	errors7_temp.append(error)
-error7 = 0
-for i in range(10):
-	error7 += abs(errors7_temp[i])
-error7 = error7/11
-errors.append(error7)
-resolutions.append(1/(0.7))
+#finding errors:
+find_error(dumpsdir7, 0.7, 12, np.pi/2, errors, cour_inv)
+find_error(dumpsdir5, 0.5, 12, np.pi/2, errors, cour_inv)
+find_error(dumpsdir4, 0.4, 12, np.pi/2, errors, cour_inv)
+#find_error(dumpsdir25, 0.25, 12, np.pi/2, errors, cour_inv)
+#find_error(dumpsdir125, 0.125, 12, np.pi/2, errors, cour_inv)
+find_error(dumpsdir0625, 0.0625, 12, np.pi/2, errors, cour_inv)
+#find_error(dumpsdir03125, 0.03125, 12, np.pi/2, errors, cour_inv)
 
-#finding error for the .5 run:
-errors5_temp = []
-for i in range(10):
-	perc = i*2
-	print(perc, "percent done")
-	uarr_num = []
-	tarr_num = []
-	uarr_ana = []
-	tarr_ana = []
-	error = 0
-	mins = find_indices(dumpsdir5, 12 + i*2, np.pi/2)
-	min_r = mins[0]
-	min_th = mins[1]
-	prims = initial_prims(min_r, min_th, dumpsdir5)
-	for i in range(181, 201): 
-		numerical(i, uarr_num, tarr_num, min_r, min_th, dumpsdir5)
-		analytical(i, uarr_ana, tarr_ana, min_r, min_th, prims, dumpsdir5)
-	for i in range(19):
-		error += abs(uarr_num[i]-uarr_ana[i])
-	error = error/20
-	errors5_temp.append(error)
-error5 = 0
-for i in range(10):
-	error5 += abs(errors5_temp[i])
-error5 = error5/11
-errors.append(error5)
-resolutions.append(2)
-
-#finding error for the .4 run:
-errors4_temp = []
-for i in range(10):
-	perc = i*2
-	print(perc, "percent done")
-	uarr_num = []
-	tarr_num = []
-	uarr_ana = []
-	tarr_ana = []
-	error = 0
-	mins = find_indices(dumpsdir4, 12 + i*2, np.pi/2)
-	min_r = mins[0]
-	min_th = mins[1]
-	prims = initial_prims(min_r, min_th, dumpsdir4)
-	for i in range(181, 201): 
-		numerical(i, uarr_num, tarr_num, min_r, min_th, dumpsdir4)
-		analytical(i, uarr_ana, tarr_ana, min_r, min_th, prims, dumpsdir4)
-	for i in range(19):
-		error += abs(uarr_num[i]-uarr_ana[i])
-	error = error/20
-	errors4_temp.append(error)
-error4 = 0
-for i in range(10):
-	error4 += abs(errors4_temp[i])
-error4 = error4/11
-errors.append(error4)
-resolutions.append(1/0.4)
-
-"""
-#finding error for the .25 run:
-errors25_temp = []
-for i in range(10):
-	perc = i*2 + 20
-	print(perc, "percent done")
-	uarr_num = []
-	tarr_num = []
-	uarr_ana = []
-	tarr_ana = []
-	error = 0
-	mins = find_indices(dumpsdir25, 12 + i*2, np.pi/2)
-	min_r = mins[0]
-	min_th = mins[1]
-	prims = initial_prims(min_r, min_th, dumpsdir25)
-	for i in range(181, 201): 
-		numerical(i, uarr_num, tarr_num, min_r, min_th, dumpsdir25)
-		analytical(i, uarr_ana, tarr_ana, min_r, min_th, prims, dumpsdir25)
-	for i in range(19):
-		error += abs(uarr_num[i]-uarr_ana[i])
-	error = error/20
-	errors25_temp.append(error)
-error25 = 0
-for i in range(10):
-	error25 += abs(errors25_temp[i])
-error25 = error25/11
-errors.append(error25)
-resolutions.append(4)
-
-#finding error for the .125 run:
-errors125_temp = []
-for i in range(10):
-	perc = i*2 + 40
-	print(perc, "percent done")
-	uarr_num = []
-	tarr_num = []
-	uarr_ana = []
-	tarr_ana = []
-	error = 0
-	mins = find_indices(dumpsdir125, 12 + i*2, np.pi/2)
-	min_r = mins[0]
-	min_th = mins[1]
-	prims = initial_prims(min_r, min_th, dumpsdir125)
-	for i in range(181, 201): 
-		numerical(i, uarr_num, tarr_num, min_r, min_th, dumpsdir125)
-		analytical(i, uarr_ana, tarr_ana, min_r, min_th, prims, dumpsdir125)
-	for i in range(19):
-		error += abs(uarr_num[i]-uarr_ana[i])
-	error = error/20
-	errors125_temp.append(error)
-error125 = 0
-for i in range(10):
-	error125 += abs(errors125_temp[i])
-error125 = error125/11
-errors.append(error125)
-resolutions.append(8)
-"""
-
-#finding error for the .0625 run:
-errors0625_temp = []
-for i in range(10):
-	perc = i*2 + 60
-	print(perc, "percent done")
-	uarr_num = []
-	tarr_num = []
-	uarr_ana = []
-	tarr_ana = []
-	error = 0
-	mins = find_indices(dumpsdir0625, 12 + i*2, np.pi/2)
-	min_r = mins[0]
-	min_th = mins[1]
-	prims = initial_prims(min_r, min_th, dumpsdir0625)
-	for i in range(181, 201): 
-		numerical(i, uarr_num, tarr_num, min_r, min_th, dumpsdir0625)
-		analytical(i, uarr_ana, tarr_ana, min_r, min_th, prims, dumpsdir0625)
-	for i in range(19):
-		error += abs(uarr_num[i]-uarr_ana[i])
-	error = error/20
-	errors0625_temp.append(error)
-error0625 = 0
-for i in range(10):
-	error0625 += abs(errors0625_temp[i])
-error0625 = error0625/11
-errors.append(error0625)
-resolutions.append(16)
-
-"""
-#finding error for the .03125 run:
-errors03125_temp = []
-for i in range(10):
-	perc = i*2 + 80
-	print(perc, "percent done")
-	uarr_num = []
-	tarr_num = []
-	uarr_ana = []
-	tarr_ana = []
-	error = 0
-	mins = find_indices(dumpsdir03125, 12 + i*2, np.pi/2)
-	min_r = mins[0]
-	min_th = mins[1]
-	prims = initial_prims(min_r, min_th, dumpsdir03125)
-	for i in range(181, 201): 
-		numerical(i, uarr_num, tarr_num, min_r, min_th, dumpsdir03125)
-		analytical(i, uarr_ana, tarr_ana, min_r, min_th, prims, dumpsdir03125)
-	for i in range(19):
-		error += abs(uarr_num[i]-uarr_ana[i])
-	error = error/20
-	errors03125_temp.append(error)
-error03125 = 0
-for i in range(10):
-	error03125 += abs(errors03125_temp[i])
-error03125 = error03125/11
-errors.append(error03125)
-resolutions.append(32)
-"""
 #this part is just for the comparison line:
 temp_res = 1
 temp_x = 3e-3
@@ -439,9 +268,9 @@ for i in range(15):
 
 #actually plotting:
 fig1, sub1 = plt.subplots()
-sub1.loglog(resolutions, errors, color = 'blue', label = 'Error of Test Cooling')
+sub1.loglog(cour_inv, errors, color = 'blue', label = 'Error of Test Cooling')
 sub1.loglog(res, x, color = 'red', label = 'Line of Slope N^-2 for Comparison')
-sub1.loglog(resolutions, errors, 'bo')
+sub1.loglog(cour_inv, errors, 'bo')
 plt.xticks([], [])
 sub1.set_xticks([])
 sub1.set_xticks([], minor=True)
