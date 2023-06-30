@@ -261,7 +261,7 @@ find_error(dumpsdir0625, 0.0625, 12, np.pi/2, errors, cour_inv)
 #this part is just for the comparison line:
 temp_res = 1
 temp_x = 1e-6
-for i in range(15):
+for i in range(12):
     x.append(temp_x*temp_res**(-2))
     res.append(temp_res)
     temp_res += 2
