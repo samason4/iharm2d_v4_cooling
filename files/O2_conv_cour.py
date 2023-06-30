@@ -8,11 +8,17 @@ from mpl_toolkits.axes_grid1 import make_axes_locatable
 import multiprocessing as mp
 
 #to call this function (from iharm2d_v4_cooling directory):
-# python files/O2_conv_cour.py ./ ./dumps5 ./dumps0625
+# python files/O2_conv_cour.py ./ ./dumps7 ./dumps5 ./dumps0625
 
 # paths to .5 dumps
-dumpsdir5 = sys.argv[2] #second argument when you call the function (in the long email plot_density this is the "./dumps")
-outputdir5 = sys.argv[1] #third argument when you call the function (in the long email plot_density this is the "./"), etc
+dumpsdir7 = sys.argv[2] #second argument when you call the function (in the long email plot_density this is the "./dumps")
+outputdir7 = sys.argv[1] #first argument when you call the function (in the long email plot_density this is the "./"), etc
+if not os.path.exists(outputdir7):
+	os.makedirs(outputdir7)
+
+# paths to .5 dumps
+dumpsdir5 = sys.argv[3] #third argument when you call the function (in the long email plot_density this is the "./dumps")
+outputdir5 = sys.argv[1] #furst argument when you call the function (in the long email plot_density this is the "./"), etc
 if not os.path.exists(outputdir5):
 	os.makedirs(outputdir5)
 """
@@ -29,7 +35,7 @@ if not os.path.exists(outputdir125):
 	os.makedirs(outputdir125)
 """
 # paths to .0625 dumps
-dumpsdir0625 = sys.argv[3] #temp 3 instead of 4
+dumpsdir0625 = sys.argv[4] #temp 3 instead of 4
 outputdir0625 = sys.argv[1]
 if not os.path.exists(outputdir0625):
 	os.makedirs(outputdir0625)
@@ -216,6 +222,34 @@ resolutions = []
 x = []
 res = []
 
+#finding error for the .7 run:
+errors7_temp = []
+for i in range(10):
+	perc = i*2
+	print(perc, "percent done")
+	uarr_num = []
+	tarr_num = []
+	uarr_ana = []
+	tarr_ana = []
+	error = 0
+	mins = find_indices(dumpsdir7, 12 + i*2, np.pi/2)
+	min_r = mins[0]
+	min_th = mins[1]
+	prims = initial_prims(min_r, min_th, dumpsdir7)
+	for i in range(181, 201): 
+		numerical(i, uarr_num, tarr_num, min_r, min_th, dumpsdir7)
+		analytical(i, uarr_ana, tarr_ana, min_r, min_th, prims, dumpsdir7)
+	for i in range(19):
+		error += abs(uarr_num[i]-uarr_ana[i])
+	error = error/20
+	errors7_temp.append(error)
+error7 = 0
+for i in range(10):
+	error7 += abs(errors7_temp[i])
+error7 = error7/11
+errors.append(error7)
+resolutions.append(1/(0.7))
+
 #finding error for the .5 run:
 errors5_temp = []
 for i in range(10):
@@ -375,7 +409,7 @@ sub1.loglog(resolutions, errors, 'bo')
 plt.xticks([], [])
 sub1.set_xticks([])
 sub1.set_xticks([], minor=True)
-sub1.set_xticks([2, 4, 8, 16], ['2^1','2^2', '2^3', '2^4'])
+sub1.set_xticks([1, 2, 4, 8, 16], ['2^0', '2^1','2^2', '2^3', '2^4'])
 plt.ylabel("Total Error")
 plt.xlabel("1 / The Courant Number")
 plt.title("Error vs 1/Courant Number at 96x96 resolution")
