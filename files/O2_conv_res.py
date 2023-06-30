@@ -34,6 +34,12 @@ outputdir384 = sys.argv[1]
 if not os.path.exists(outputdir384):
 	os.makedirs(outputdir384)
 
+# paths to 512x512 dumps
+dumpsdir512 = sys.argv[6]
+outputdir512 = sys.argv[1]
+if not os.path.exists(outputdir512):
+	os.makedirs(outputdir512)
+
 #function that finds the indices:
 def find_indices(dumpsdir, r_want, th_want):
 
@@ -322,10 +328,38 @@ error384 = error384/11
 errors.append(error384)
 resolutions.append(384)
 
+#finding errors for dump 512:
+errors512_temp = []
+for i in range(10):
+	perc = i*2.5
+	print(perc, "percent done")
+	uarr_num = []
+	tarr_num = []
+	uarr_ana = []
+	tarr_ana = []
+	error = 0
+	mins = find_indices(dumpsdir512, 12 + i*2, np.pi/2)
+	min_r = mins[0]
+	min_th = mins[1]
+	prims = initial_prims(min_r, min_th, dumpsdir512)
+	for i in range(181, 201): 
+		numerical(i, uarr_num, tarr_num, min_r, min_th, dumpsdir512)
+		analytical(i, uarr_ana, tarr_ana, min_r, min_th, prims, dumpsdir512)
+	for i in range(19):
+		error += abs(uarr_num[i]-uarr_ana[i])
+	error = error/20
+	errors512_temp.append(error)
+error512 = 0
+for i in range(10):
+	error512 += abs(errors512_temp[i])
+error512 = error512/11
+errors.append(error512)
+resolutions.append(521)
+
 #this part is just for the comparison line:
 temp_res = 90
 temp_x = 7e-2
-for i in range(27):
+for i in range(30):
     temp_res += 12
     x.append(temp_x*temp_res**(-2))
     res.append(temp_res)
