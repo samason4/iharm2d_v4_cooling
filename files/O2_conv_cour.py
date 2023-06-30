@@ -8,7 +8,7 @@ from mpl_toolkits.axes_grid1 import make_axes_locatable
 import multiprocessing as mp
 
 #to call this function (from iharm2d_v4_cooling directory):
-# python files/O2_conv_cour.py ./ ./dumps7 ./dumps5 ./dumps0625
+# python files/O2_conv_cour.py ./ ./dumps7 ./dumps5 ./dumps4
 
 # paths to .5 dumps
 dumpsdir7 = sys.argv[2] #second argument when you call the function (in the long email plot_density this is the "./dumps")
@@ -21,6 +21,12 @@ dumpsdir5 = sys.argv[3] #third argument when you call the function (in the long 
 outputdir5 = sys.argv[1] #furst argument when you call the function (in the long email plot_density this is the "./"), etc
 if not os.path.exists(outputdir5):
 	os.makedirs(outputdir5)
+
+# paths to .4 dumps
+dumpsdir4 = sys.argv[4] #fourth argument when you call the function (in the long email plot_density this is the "./dumps")
+outputdir4 = sys.argv[1] #furst argument when you call the function (in the long email plot_density this is the "./"), etc
+if not os.path.exists(outputdir4):
+	os.makedirs(outputdir4)
 """
 # paths to .25 dumps
 dumpsdir25 = sys.argv[3]
@@ -33,13 +39,13 @@ dumpsdir125 = sys.argv[4]
 outputdir125 = sys.argv[1]
 if not os.path.exists(outputdir125):
 	os.makedirs(outputdir125)
-"""
+
 # paths to .0625 dumps
 dumpsdir0625 = sys.argv[4] #temp 3 instead of 4
 outputdir0625 = sys.argv[1]
 if not os.path.exists(outputdir0625):
 	os.makedirs(outputdir0625)
-"""
+
 # paths to .03125 dumps
 dumpsdir03125 = sys.argv[6]
 outputdir03125 = sys.argv[1]
@@ -278,6 +284,34 @@ error5 = error5/11
 errors.append(error5)
 resolutions.append(2)
 
+#finding error for the .4 run:
+errors4_temp = []
+for i in range(10):
+	perc = i*2
+	print(perc, "percent done")
+	uarr_num = []
+	tarr_num = []
+	uarr_ana = []
+	tarr_ana = []
+	error = 0
+	mins = find_indices(dumpsdir4, 12 + i*2, np.pi/2)
+	min_r = mins[0]
+	min_th = mins[1]
+	prims = initial_prims(min_r, min_th, dumpsdir4)
+	for i in range(181, 201): 
+		numerical(i, uarr_num, tarr_num, min_r, min_th, dumpsdir4)
+		analytical(i, uarr_ana, tarr_ana, min_r, min_th, prims, dumpsdir4)
+	for i in range(19):
+		error += abs(uarr_num[i]-uarr_ana[i])
+	error = error/20
+	errors4_temp.append(error)
+error4 = 0
+for i in range(10):
+	error4 += abs(errors4_temp[i])
+error4 = error4/11
+errors.append(error4)
+resolutions.append(2)
+
 """
 #finding error for the .25 run:
 errors25_temp = []
@@ -334,7 +368,6 @@ for i in range(10):
 error125 = error125/11
 errors.append(error125)
 resolutions.append(8)
-"""
 
 #finding error for the .0625 run:
 errors0625_temp = []
@@ -364,7 +397,6 @@ error0625 = error0625/11
 errors.append(error0625)
 resolutions.append(16)
 
-"""
 #finding error for the .03125 run:
 errors03125_temp = []
 for i in range(10):
