@@ -312,7 +312,7 @@ for i in range(10):
 	error4 += abs(errors4_temp[i])
 error4 = error4/11
 errors.append(error4)
-resolutions.append(2)
+resolutions.append(1/0.4)
 
 """
 #finding error for the .25 run:
