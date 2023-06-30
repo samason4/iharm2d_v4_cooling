@@ -404,7 +404,7 @@ for i in range(15):
 #actually plotting:
 fig1, sub1 = plt.subplots()
 sub1.loglog(resolutions, errors, color = 'blue', label = 'Error of Test Cooling')
-#sub1.loglog(res, x, color = 'red', label = 'Line of Slope N^-2 for Comparison')
+sub1.loglog(res, x, color = 'red', label = 'Line of Slope N^-2 for Comparison')
 sub1.loglog(resolutions, errors, 'bo')
 plt.xticks([], [])
 sub1.set_xticks([])
