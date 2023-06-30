@@ -260,11 +260,11 @@ find_error(dumpsdir0625, 0.0625, 12, np.pi/2, errors, cour_inv)
 
 #this part is just for the comparison line:
 temp_res = 1
-temp_x = 3e-3
+temp_x = 1e-6
 for i in range(15):
-    temp_res += 2
     x.append(temp_x*temp_res**(-2))
     res.append(temp_res)
+    temp_res += 2
 
 #actually plotting:
 fig1, sub1 = plt.subplots()
