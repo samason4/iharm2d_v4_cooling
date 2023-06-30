@@ -39,13 +39,15 @@ dumpsdir125 = sys.argv[4]
 outputdir125 = sys.argv[1]
 if not os.path.exists(outputdir125):
 	os.makedirs(outputdir125)
-
+"""
+	
 # paths to .0625 dumps
 dumpsdir0625 = sys.argv[4] #temp 3 instead of 4
 outputdir0625 = sys.argv[1]
 if not os.path.exists(outputdir0625):
 	os.makedirs(outputdir0625)
 
+"""
 # paths to .03125 dumps
 dumpsdir03125 = sys.argv[6]
 outputdir03125 = sys.argv[1]
@@ -368,6 +370,7 @@ for i in range(10):
 error125 = error125/11
 errors.append(error125)
 resolutions.append(8)
+"""
 
 #finding error for the .0625 run:
 errors0625_temp = []
@@ -397,6 +400,7 @@ error0625 = error0625/11
 errors.append(error0625)
 resolutions.append(16)
 
+"""
 #finding error for the .03125 run:
 errors03125_temp = []
 for i in range(10):
