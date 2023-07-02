@@ -250,8 +250,8 @@ errors.append(find_error(dumpsdir0625, 12, 32, np.pi/2))
 
 #plotting:
 fig1, sub1 = plt.subplots()
-print("cour_inv: " cour_inv)
-print("errors: " errors)
+print("cour_inv: ", cour_inv)
+print("errors: ", errors)
 sub1.loglog(cour_inv, errors, color = 'b', label = 'Error of Test Cooling')
 sub1.loglog(res, x, color = 'r', label = 'Line of Slope N^-2 for Comparison')
 sub1.loglog(res2, x2, color = 'g', label = 'Line of Slope N^-1 for Comparison')
