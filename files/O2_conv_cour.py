@@ -129,8 +129,8 @@ def initial_prims(min_r, min_th, dumpsdir):
 	rho = prims[:,0].reshape((n1,n2))[min_r][min_th]
 	game = 1.333333
 	m = 3
-	ut = ucon_calc(min_r, min_th, n1, n2, ndim, dumpsdir)
-	alpha = -1/(3*r**(3/2)*ut)
+	#ut = ucon_calc(min_r, min_th, n1, n2, ndim, dumpsdir)
+	alpha = -1/(3*r**(3/2))
 	u = rho**game*np.exp(kel0*(game-1))
 	return [alpha, u]
 
