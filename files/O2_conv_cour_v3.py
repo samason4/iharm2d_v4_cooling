@@ -211,7 +211,8 @@ def find_error(dumpsdir, want_r_min, want_r_max, want_th):
 		num = numerical(200, min_r, min_th, dumpsdir)
 		ana = analytical(200, prims, dumpsdir)
 		error += abs(num-ana)
-	return(error / want_r_min - (want_r_max + 1))
+	error = error/(want_r_min - (want_r_max+1))
+	return(error)
 
 #this part is just for the comparison line:
 x = []
@@ -259,7 +260,7 @@ sub1.set_xticks([], minor=True)
 sub1.set_xticks([1, 2, 4, 8, 16], ['2^0', '2^1','2^2', '2^3', '2^4'])
 plt.ylabel("Total Error")
 plt.xlabel("1 / The Courant Number")
-plt.title('r = {0:04d}'.format(i))
+plt.title('only averaged over space')
 plt.legend()
 plt.savefig(os.path.join(outputdir5,'error_vs_cour_{0:04d}.png'.format(i)))
 plt.close()
