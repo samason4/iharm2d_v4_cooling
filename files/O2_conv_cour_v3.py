@@ -202,8 +202,8 @@ def analytical(dumpno, prims, dumpsdir):
 	return(u)
 
 def find_error(dumpsdir, want_r_min, want_r_max, want_th):
-    error = 0
-    for i in range(want_r_min, want_r_max + 1):
+	error = 0
+	for i in range(want_r_min, want_r_max + 1):
 		mins = find_indices(dumpsdir, i, want_th)
 		min_r = mins[0]
 		min_th = mins[1]
