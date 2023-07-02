@@ -211,7 +211,7 @@ def find_error(dumpsdir, want_r_min, want_r_max, want_th):
 		num = numerical(200, min_r, min_th, dumpsdir)
 		ana = analytical(200, prims, dumpsdir)
 		error += abs(num-ana)
-	error = error/(want_r_min - (want_r_max+1))
+	error = -1*error/(want_r_min - (want_r_max+1))
 	return(error)
 
 #this part is just for the comparison line:
