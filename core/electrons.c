@@ -184,17 +184,13 @@ inline void cool_electrons_1zone(struct GridGeom *G, struct FluidState *S, int i
   //m is arbitrary
   double m = 3.0;
   
-  //Dt is given so we don't even need to initialize it
+  //dt is a global variable so we don't even need to initialize it
 
   //to fing uel:
   double uel = pow(S->P[RHO][j][i], game)*exp(S->P[KEL0][j][i]*(game-1));
 
   //update the internal energy of the electrons at (i,j):
-  //uel -= uel/(m*pow(r, 1.5)*ut)*dt*0.5; this is the original one, the following code is my attempt at runge kutta
-  double uel_half = uel - uel/(m*pow(r, 1.5)*ut)*dt*0.5;
-  double k1 = -1*uel/(m*pow(r,1.5)*ut);
-  double k2 = -1/(m*pow(r,1.5)*ut)*uel_half;
-  uel += (k1+k2)*dt*0.25;
+  uel -= uel/(m*pow(r, 1.5)*ut)*dt*0.5;
 
   //update the entropy with the new internal energy
   S->P[KEL0][j][i] = log(uel/pow(S->P[RHO][j][i], game))/(game-1);
