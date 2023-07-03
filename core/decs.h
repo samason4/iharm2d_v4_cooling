@@ -421,9 +421,9 @@ void update_f(struct FluidFlux *F, GridPrim *dU);
 // electrons.c
 #if ELECTRONS
 void init_electrons(struct GridGeom *G, struct FluidState *S);
+void fixup_electrons(struct FluidState *S);
 #if HEATING
 void heat_electrons(struct GridGeom *G, struct FluidState *Sh, struct FluidState *S);
-void fixup_electrons(struct FluidState *S);
 #endif
 #if COOLING
 void cool_electrons(struct GridGeom *G, struct FluidState *S, double Dt);

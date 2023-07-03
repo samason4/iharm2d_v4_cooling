@@ -11,6 +11,7 @@
 #include "bl_coord.h"
 
 #if ELECTRONS
+void fixup_electrons_1zone(struct FluidState *S, int i, int j);
 #if HEATING
 // TODO put these in options with a default in decs.h
 // Defined as in decs.h, CONSTANT not included in ALLMODELS version
@@ -21,7 +22,6 @@
 #define SHARMA    12
 #define CONSTANT 5 //tbh, this is never considered 
 
-void fixup_electrons_1zone(struct FluidState *S, int i, int j);
 void heat_electrons_1zone(struct GridGeom *G, struct FluidState *Sh, struct FluidState *S, int i, int j);
 double get_fels(struct GridGeom *G, struct FluidState *S, int i, int j, int model);
 #endif //HEATING
@@ -130,6 +130,8 @@ if (model == KAWAZURA) {
 
   return fel;
 }
+#endif //HEATING
+
 
 void fixup_electrons(struct FluidState *S)
 {
@@ -157,7 +159,7 @@ inline void fixup_electrons_1zone(struct FluidState *S, int i, int j)
     S->P[idx][j][i] = MY_MIN(S->P[idx][j][i], kelmax);
   }
 }
-#endif //HEATING
+
 
 #if COOLING
 void cool_electrons(struct GridGeom *G, struct FluidState *S, double Dt)
