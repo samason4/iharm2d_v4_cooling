@@ -67,11 +67,6 @@ void step(struct GridGeom *G, struct FluidState *S)
 
   // Corrector step
   double ndt = advance_fluid(G, S, Stmp, S, dt);
-#if ELECTRONS
-#if COOLING
-  cool_electrons(G, S, 0.5*dt);
-#endif
-#endif
   FLAG("Advance Fluid Full");
 
 #if ELECTRONS
@@ -109,6 +104,12 @@ void step(struct GridGeom *G, struct FluidState *S)
     dt = SAFE * dt;
   else
     dt = ndt;
+
+#if ELECTRONS
+#if COOLING
+  cool_electrons(G, S, 0.5*dt);
+#endif
+#endif
 }
 
 
