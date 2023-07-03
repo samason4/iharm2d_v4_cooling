@@ -37,7 +37,7 @@ void step(struct GridGeom *G, struct FluidState *S)
   // Predictor setup
 #if ELECTRONS
 #if COOLING
-  cool_electrons(G, S, 0.5);
+  cool_electrons(G, S, 0.5*dt);
 #endif
 #endif
   advance_fluid(G, S, S, Stmp, 0.5*dt);
@@ -69,7 +69,7 @@ void step(struct GridGeom *G, struct FluidState *S)
   double ndt = advance_fluid(G, S, Stmp, S, dt);
 #if ELECTRONS
 #if COOLING
-  cool_electrons(G, S, 1.0);
+  cool_electrons(G, S, 0.5*dt);
 #endif
 #endif
   FLAG("Advance Fluid Full");
