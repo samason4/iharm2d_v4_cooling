@@ -70,6 +70,12 @@ void step(struct GridGeom *G, struct FluidState *S)
   FLAG("Advance Fluid Full");
 
 #if ELECTRONS
+#if COOLING
+  cool_electrons(G, S);
+#endif
+#endif
+
+#if ELECTRONS
 #if HEATING
   heat_electrons(G, Stmp, S);
   FLAG("Heat Electrons Full");
@@ -104,12 +110,6 @@ void step(struct GridGeom *G, struct FluidState *S)
     dt = SAFE * dt;
   else
     dt = ndt;
-
-#if ELECTRONS
-#if COOLING
-  cool_electrons(G, S);
-#endif
-#endif
 }
 
 
