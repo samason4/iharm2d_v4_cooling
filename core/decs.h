@@ -426,7 +426,7 @@ void heat_electrons(struct GridGeom *G, struct FluidState *Sh, struct FluidState
 void fixup_electrons(struct FluidState *S);
 #endif
 #if COOLING
-void cool_electrons(struct GridGeom *G, struct FluidState *S);
+void cool_electrons(struct GridGeom *G, struct FluidState *S, int step);
 #endif
 #endif
 

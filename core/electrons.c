@@ -27,7 +27,7 @@ double get_fels(struct GridGeom *G, struct FluidState *S, int i, int j, int mode
 #endif //HEATING
 
 #if COOLING
-void cool_electrons_1zone(struct GridGeom *G, struct FluidState *S, int i, int j);
+void cool_electrons_1zone(struct GridGeom *G, struct FluidState *S, int i, int j, int step);
 #endif
 
 void init_electrons(struct GridGeom *G, struct FluidState *S)
@@ -160,19 +160,19 @@ inline void fixup_electrons_1zone(struct FluidState *S, int i, int j)
 #endif //HEATING
 
 #if COOLING
-void cool_electrons(struct GridGeom *G, struct FluidState *S)
+void cool_electrons(struct GridGeom *G, struct FluidState *S, int step)
 {
   #pragma omp parallel for collapse(2)
   ZLOOP {
-    cool_electrons_1zone(G, S, i, j);
+    cool_electrons_1zone(G, S, i, j, step);
   }
 }
 
-inline void cool_electrons_1zone(struct GridGeom *G, struct FluidState *S, int i, int j)
+inline void cool_electrons_1zone(struct GridGeom *G, struct FluidState *S, int i, int j, int step)
 {
   //to find ut:
-  //ucon_calc(G, S, i, j, CENT);
-  //double ut = S->ucon[0][j][i];
+  ucon_calc(G, S, i, j, CENT);
+  double ut = S->ucon[0][j][i];
 
   // to find r:
   double X[NDIM];
@@ -189,7 +189,7 @@ inline void cool_electrons_1zone(struct GridGeom *G, struct FluidState *S, int i
   double uel = pow(S->P[RHO][j][i], game)*exp(S->P[KEL0][j][i]*(game-1));
 
   //update the internal energy of the electrons at (i,j):
-  uel -= uel/(m*pow(r, 1.5))*dt*0.5;
+  uel -= uel/(m*pow(r, 1.5)*ut)*dt*step;
 
   //update the entropy with the new internal energy
   S->P[KEL0][j][i] = log(uel/pow(S->P[RHO][j][i], game))/(game-1);

@@ -8,7 +8,7 @@ from mpl_toolkits.axes_grid1 import make_axes_locatable
 import multiprocessing as mp
 
 #to call this function (from iharm2d_v4_cooling directory):
-# python files/O2_conv_cour.py ./ ./dumps7 ./dumps5 ./dumps4 ./dumps0625
+# python files/O2_conv_cour.py ./ ./dumps7 ./dumps5 ./dumps4
 
 # paths to .5 dumps
 dumpsdir7 = sys.argv[2]
@@ -129,8 +129,8 @@ def initial_prims(min_r, min_th, dumpsdir):
 	rho = prims[:,0].reshape((n1,n2))[min_r][min_th]
 	game = 1.333333
 	m = 3
-	#ut = ucon_calc(min_r, min_th, n1, n2, ndim, dumpsdir)
-	alpha = -1/(3*r**(3/2))
+	ut = ucon_calc(min_r, min_th, n1, n2, ndim, dumpsdir)
+	alpha = -1/(3*r**(3/2)*ut)
 	u = rho**game*np.exp(kel0*(game-1))
 	return [alpha, u]
 
@@ -189,7 +189,7 @@ def numerical(dumpno, uarr, tarr, min_r, min_th, dumpsdir):
 	uarr.append(u)
 	tarr.append(t)
 
-def analytical(dumpno, uarr, tarr, min_r, min_th, prims, dumpsdir):	
+def analytical(dumpno, uarr, tarr, prims, dumpsdir):	
 	
 	# header info
 	header = open(os.path.join(dumpsdir,'dump_0000{0:04d}'.format(dumpno)),'r')
@@ -236,7 +236,7 @@ def find_error(dumpsdir, cour, want_r, want_th, errors, cour_inv):
 	prims = initial_prims(min_r, min_th, dumpsdir)
 	for i in range(181, 201): #looping over time
 		numerical(i, uarr_num, tarr_num, min_r, min_th, dumpsdir)
-		analytical(i, uarr_ana, tarr_ana, min_r, min_th, prims, dumpsdir)
+		analytical(i, uarr_ana, tarr_ana, prims, dumpsdir)
 	for i in range(20):
 		error += abs(uarr_num[i]-uarr_ana[i])
 	error = error/20
