@@ -11,7 +11,6 @@
 #include "bl_coord.h"
 
 #if ELECTRONS
-void fixup_electrons_1zone(struct FluidState *S, int i, int j);
 #if HEATING
 // TODO put these in options with a default in decs.h
 // Defined as in decs.h, CONSTANT not included in ALLMODELS version
@@ -24,10 +23,11 @@ void fixup_electrons_1zone(struct FluidState *S, int i, int j);
 
 void heat_electrons_1zone(struct GridGeom *G, struct FluidState *Sh, struct FluidState *S, int i, int j);
 double get_fels(struct GridGeom *G, struct FluidState *S, int i, int j, int model);
+void fixup_electrons_1zone(struct FluidState *S, int i, int j);
 #endif //HEATING
 
 #if COOLING
-void cool_electrons_1zone(struct GridGeom *G, struct FluidState *S, int i, int j, double Dt);
+void cool_electrons_1zone(struct GridGeom *G, struct FluidState *S, int i, int j);
 #endif
 
 void init_electrons(struct GridGeom *G, struct FluidState *S)
@@ -124,15 +124,6 @@ if (model == KAWAZURA) {
 	fel = 1./(1.+1./QeQi);
 }
 
-#if SUPPRESS_HIGHB_HEAT
-  if(bsq/S->P[RHO][j][i] > 1.) fel = 0;
-#endif
-
-  return fel;
-}
-#endif //HEATING
-
-
 void fixup_electrons(struct FluidState *S)
 {
   timer_start(TIMER_ELECTRON_FIXUP);
@@ -160,17 +151,25 @@ inline void fixup_electrons_1zone(struct FluidState *S, int i, int j)
   }
 }
 
+#if SUPPRESS_HIGHB_HEAT
+  if(bsq/S->P[RHO][j][i] > 1.) fel = 0;
+#endif
+
+  return fel;
+}
+#endif //HEATING
+
 
 #if COOLING
-void cool_electrons(struct GridGeom *G, struct FluidState *S, double Dt)
+void cool_electrons(struct GridGeom *G, struct FluidState *S)
 {
   #pragma omp parallel for collapse(2)
   ZLOOP {
-    cool_electrons_1zone(G, S, i, j, Dt);
+    cool_electrons_1zone(G, S, i, j);
   }
 }
 
-inline void cool_electrons_1zone(struct GridGeom *G, struct FluidState *S, int i, int j, double Dt)
+inline void cool_electrons_1zone(struct GridGeom *G, struct FluidState *S, int i, int j)
 {
   //to find ut:
   ucon_calc(G, S, i, j, CENT);
@@ -185,13 +184,17 @@ inline void cool_electrons_1zone(struct GridGeom *G, struct FluidState *S, int i
   //m is arbitrary
   double m = 3.0;
   
-  //dt is a global variable so we don't even need to initialize it
+  //Dt is given so we don't even need to initialize it
 
   //to fing uel:
   double uel = pow(S->P[RHO][j][i], game)*exp(S->P[KEL0][j][i]*(game-1));
 
   //update the internal energy of the electrons at (i,j):
-  uel -= uel/(m*pow(r, 1.5)*ut)*Dt;
+  //uel -= uel/(m*pow(r, 1.5)*ut)*dt*0.5; this is the original one, the following code is my attempt at runge kutta
+  double uel_half = uel - uel/(m*pow(r, 1.5)*ut)*dt*0.5
+  double k1 = -uel/(m*pow(r,1.5)*ut);
+  double k2 = -1/(m*pow(r,1.5)*ut)*uel_half;
+  uel += (k1+k2)*dt*0.25;
 
   //update the entropy with the new internal energy
   S->P[KEL0][j][i] = log(uel/pow(S->P[RHO][j][i], game))/(game-1);
