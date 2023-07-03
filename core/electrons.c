@@ -191,8 +191,8 @@ inline void cool_electrons_1zone(struct GridGeom *G, struct FluidState *S, int i
 
   //update the internal energy of the electrons at (i,j):
   //uel -= uel/(m*pow(r, 1.5)*ut)*dt*0.5; this is the original one, the following code is my attempt at runge kutta
-  double uel_half = uel - uel/(m*pow(r, 1.5)*ut)*dt*0.5
-  double k1 = -uel/(m*pow(r,1.5)*ut);
+  double uel_half = uel - uel/(m*pow(r, 1.5)*ut)*dt*0.5;
+  double k1 = -1*uel/(m*pow(r,1.5)*ut);
   double k2 = -1/(m*pow(r,1.5)*ut)*uel_half;
   uel += (k1+k2)*dt*0.25;
 
