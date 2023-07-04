@@ -2,7 +2,7 @@
 
 # COORDINATES
 [dbl] tf = 1000.0
-[dbl] dt = 1.0e-16
+[dbl] dt = 1.0e-06
 [dbl] Rout = 50.0
 
 # FLUID
