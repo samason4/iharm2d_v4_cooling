@@ -32,6 +32,8 @@ void save_problem_data(FILE *fp)
 // Initializing mean state and perturbations based on nmode
 void init(struct GridGeom *G, struct FluidState *S)
 {
+	double X[NDIM];
+
 	// Mean (background) state
 	double rho0 = 1.;
 	double u0 = 1.;
