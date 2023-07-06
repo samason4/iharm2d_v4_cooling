@@ -302,6 +302,7 @@ extern int nthreads;
 //Electron cooling
 #define MBH (8.26e39) // Mass of the black hole
 #define Munit (1) // Munit for code<->CGS conversion
+extern int tau
 
 // Electrons
 #if ELECTRONS
