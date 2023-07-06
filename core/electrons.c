@@ -196,6 +196,10 @@ inline void cool_electrons_1zone(struct GridGeom *G, struct FluidState *S, int i
   //update the entropy with the new internal energy
   S->P[KEL0][j][i] = log(uel/pow(S->P[RHO][j][i], game))/(game-1);
   */
+
+//Have to initialize tau here for now because I can't figure out how to initialize it in prob/flat_space
+  int tau = 5
+
  //to fing uel:
   double uel = pow(S->P[RHO][j][i], game)*exp(S->P[KEL0][j][i]*(game-1));
 
