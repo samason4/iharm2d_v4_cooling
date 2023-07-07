@@ -25,7 +25,7 @@ outputdir2 = sys.argv[1]
 if not os.path.exists(outputdir2):
 	os.makedirs(outputdir2)
 
-dumpsdir05 = sys.argv[2]
+dumpsdir05 = sys.argv[5]
 outputdir05 = sys.argv[1]
 if not os.path.exists(outputdir05):
 	os.makedirs(outputdir05)
@@ -50,7 +50,7 @@ def initial_prims(dumpsdir, min_r, min_th):
 	u = rho**game*np.exp(kel0*(game-1))
 	return [alpha, u]
 	
-def numerical(dumpsdir, dumpno, uarr, tarr, min_r, min_th):	
+def numerical(dumpsdir, dumpno, min_r, min_th):	
 	
 	# header info
 	header = open(os.path.join(dumpsdir,'dump_0000{0:04d}'.format(dumpno)),'r')
@@ -94,8 +94,8 @@ def find_error(dumpsdir, dump_min, dump_max):
 		min_r = 5
 		min_th = 5
 		prims = initial_prims(dumpsdir, min_r, min_th)
-		num = numerical(dumpsdir, i, min_r, min_th)
-		ana = analytical(dumpsdir, i, prims)
+		num = numerical(dumpsdir, i, min_r, min_th)[0]
+		ana = analytical(dumpsdir, i, prims)[0]
 		error += abs(num-ana)
 	error = error/((dump_max+1)-dump_min)
 	return(error)
@@ -112,18 +112,34 @@ errors.append(find_error(dumpsdir2, 80, 100))
 cour_inv.append(1/0.05)
 errors.append(find_error(dumpsdir05, 80, 100))
 
+#this is for the comparison line:
+x = []
+res = []
+x2 = []
+res2 = []
+temp_res = 1
+temp_x = 5e-4
+for i in range(12):
+    x.append(temp_x*temp_res**(-2))
+    res.append(temp_res)
+    temp_res += 2
+temp_res2 = 1
+temp_x2 = 5e-4
+for i in range(12):
+    x2.append(temp_x2*temp_res2**(-1))
+    res2.append(temp_res2)
+    temp_res2 += 2
+
 #plotting:
-sub1 = plt.subplots()
-print("cour_inv: ", cour_inv)
-print("errors: ", errors)
+fig1, sub1 = plt.subplots()
 sub1.loglog(cour_inv, errors, color = 'b', label = 'Error of Test Cooling')
-#sub1.loglog(res, x, color = 'r', label = 'Line of Slope N^-2 for Comparison')
-#sub1.loglog(res2, x2, color = 'g', label = 'Line of Slope N^-1 for Comparison')
+sub1.loglog(res, x, color = 'r', label = 'Line of Slope N^-2 for Comparison')
+sub1.loglog(res2, x2, color = 'g', label = 'Line of Slope N^-1 for Comparison')
 sub1.loglog(cour_inv, errors, 'bo')
-"""plt.xticks([], [])
+plt.xticks([], [])
 sub1.set_xticks([])
 sub1.set_xticks([], minor=True)
-sub1.set_xticks([1, 2, 4, 8, 16], ['2^0', '2^1','2^2', '2^3', '2^4'])"""
+sub1.set_xticks([1, 2, 4, 8, 16, 32], ['2^0', '2^1', '2^2', '2^3', '2^4', '2^5'])
 plt.ylabel("Total Error")
 plt.xlabel("1 / The Courant Number")
 plt.title('Error vs 1/cour')
