@@ -15,7 +15,7 @@
 #define FML_INT_OUT "%10d"
 #define STRING_OUT "%15s"
 
-int tau;
+static int tau;
 
 // Assign problem param names and pointers
 void set_problem_params()
