@@ -116,9 +116,9 @@ for i in range(12):
     temp_res2 += 2
 
 #finding errors:
-cour_inv = []
-errors = []
-for i in range(201):
+for i in range(101):
+    cour_inv = []
+    errors = []
     cour_inv.append(1/0.9)
     errors.append(find_error(dumpsdir9, i))
     cour_inv.append(1/0.5)
