@@ -69,7 +69,7 @@ def numerical(dumpsdir, dumpno, min_r, min_th):
 	rho = prims[:,0].reshape((n1,n2))
 	game = 1.333333
 	u = rho[min_r][min_th]**game*np.exp(kel0[min_r][min_th]*(game-1))
-	return([u,t])
+	return(u)
 
 def analytical(dumpsdir, dumpno, prims):	
 	
@@ -83,17 +83,17 @@ def analytical(dumpsdir, dumpno, prims):
 	t = '{:.3f}'.format(t)
 	
 	# adding u and t
-	alpha = -0.2
+	alpha = prims[0]
 	u0 = prims[1]
 	u = u0*np.exp(alpha*float(t))
-	return([u, t])
+	return(u)
 
 def find_error(dumpsdir, dumpno):
 	min_r = 5
 	min_th = 5
 	prims = initial_prims(dumpsdir, min_r, min_th)
-	num = numerical(dumpsdir, i, min_r, min_th)[0]
-	ana = analytical(dumpsdir, i, prims)[0]
+	num = numerical(dumpsdir, dumpno, min_r, min_th)
+	ana = analytical(dumpsdir, dumpno, prims)
 	error = abs(num-ana)
 	return(error)
 
@@ -115,8 +115,8 @@ for i in range(12):
     res2.append(temp_res2)
     temp_res2 += 2
 
-#finding errors:
 for i in range(101):
+    #finding errors:
     cour_inv = []
     errors = []
     cour_inv.append(1/0.9)

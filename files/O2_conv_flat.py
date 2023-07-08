@@ -88,29 +88,28 @@ def analytical(dumpsdir, dumpno, prims):
 	u = u0*np.exp(alpha*float(t))
 	return([u, t])
 
-def find_error(dumpsdir, dump_min, dump_max):
+def find_error(dumpsdir):
 	error = 0
-	for i in range(dump_min, dump_max + 1):
-		min_r = 5
-		min_th = 5
-		prims = initial_prims(dumpsdir, min_r, min_th)
-		num = numerical(dumpsdir, i, min_r, min_th)[0]
-		ana = analytical(dumpsdir, i, prims)[0]
-		error += abs(num-ana)
-	error = error/((dump_max+1)-dump_min)
+	for i in range(10):
+		for j in range(10):
+			prims = initial_prims(dumpsdir, i, j)
+			num = numerical(dumpsdir, 100, i, j)[0]
+			ana = analytical(dumpsdir, 100, prims)[0]
+			error += abs(num-ana)
+	error = error/100
 	return(error)
 
 #finding errors:
 cour_inv = []
 errors = []
 cour_inv.append(1/0.9)
-errors.append(find_error(dumpsdir9, 80, 100))
+errors.append(find_error(dumpsdir9))
 cour_inv.append(1/0.5)
-errors.append(find_error(dumpsdir5, 80, 100))
+errors.append(find_error(dumpsdir5))
 cour_inv.append(1/0.2)
-errors.append(find_error(dumpsdir2, 80, 100))
+errors.append(find_error(dumpsdir2))
 cour_inv.append(1/0.05)
-errors.append(find_error(dumpsdir05, 80, 100))
+errors.append(find_error(dumpsdir05))
 
 #this is for the comparison line:
 x = []
