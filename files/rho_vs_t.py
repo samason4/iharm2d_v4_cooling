@@ -71,20 +71,20 @@ def log_rho(dumpno, min_r, min_th, dumpsdir):
 	return(-np.log10(rho))
 
 def find_rho(dumpsdir, want_r, want_th, nums, ts):
-    small = 10
-    large = 0.00000000
-    mins = find_indices(dumpsdir, want_r, want_th)
-    min_r = mins[0]
-    min_th = mins[1]
-    for i in range(201):
-    	nume = log_rho(i, min_r, min_th, dumpsdir)
-	    nums.append(nume)
-        ts.append(5*i)
-        if(small>nume):
-            small = nume
-    	if(large<nume):
-            large = nume
-    print(large-small)
+	small = 10
+	large = 0.00000000
+	mins = find_indices(dumpsdir, want_r, want_th)
+	min_r = mins[0]
+	min_th = mins[1]
+	for i in range(201):
+		nume = log_rho(i, min_r, min_th, dumpsdir)
+		nums.append(nume)
+		ts.append(5*i)
+		if(small>nume):
+			small = nume
+		if(large<nume):
+			large = nume
+	print(large-small)
 
 
 
