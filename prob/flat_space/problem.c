@@ -32,7 +32,6 @@ void save_problem_data(FILE *fp)
 // Initializing mean state and perturbations based on nmode
 void init(struct GridGeom *G, struct FluidState *S)
 {
-	double X[NDIM];
 
 	// Mean (background) state
 	double rho0 = 1.;
@@ -50,7 +49,6 @@ void init(struct GridGeom *G, struct FluidState *S)
 
 	ZLOOP
 	{
-		coord(i, j, CENT, X);
 		S->P[RHO][j][i] = rho0;
 		S->P[UU][j][i] = u0;
 		S->P[U1][j][i] = U10;
@@ -61,8 +59,11 @@ void init(struct GridGeom *G, struct FluidState *S)
 		S->P[B3][j][i] = B30;
 	}
 
-	// Enforce boundary conditions
-	set_bounds(G, S);
+	init_electrons(G, S);
+
+    //Enforce boundary conditions
+    fixup(G, S);
+    set_bounds(G, S);
 
 	LOG("Finished init()");
 }
