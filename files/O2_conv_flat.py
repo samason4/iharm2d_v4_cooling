@@ -117,13 +117,13 @@ res = []
 x2 = []
 res2 = []
 temp_res = 1
-temp_x = 5e-4
+temp_x = 1e-15
 for i in range(12):
     x.append(temp_x*temp_res**(-2))
     res.append(temp_res)
     temp_res += 2
 temp_res2 = 1
-temp_x2 = 5e-4
+temp_x2 = 1e-15
 for i in range(12):
     x2.append(temp_x2*temp_res2**(-1))
     res2.append(temp_res2)
