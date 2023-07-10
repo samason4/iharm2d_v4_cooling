@@ -35,7 +35,7 @@ void init(struct GridGeom *G, struct FluidState *S)
 
 	// Mean (background) state
 	double rho0 = 1.;
-	double u0 = 1.;
+	double u0 = 1.e-2;
 	double B10 = 0.;
 	double B20 = 0.;
 	double B30 = 0.;
