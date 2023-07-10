@@ -47,7 +47,7 @@ def initial_prims(dumpsdir, min_r, min_th):
 	rho = prims[:,0].reshape((n1,n2))[min_r][min_th]
 	game = 1.333333
 	alpha = -0.2
-	u = rho**game*np.exp(kel0*(game-1))
+	u = rho**game*kel0/(game-1)
 	return [alpha, u]
 	
 def numerical(dumpsdir, dumpno, min_r, min_th):	
@@ -65,10 +65,10 @@ def numerical(dumpsdir, dumpno, min_r, min_th):
 	
 	# loading prims
 	prims = np.loadtxt(os.path.join(dumpsdir,'dump_0000{0:04d}'.format(dumpno)),skiprows=1)
-	kel0 = prims[:,9].reshape((n1,n2))
-	rho = prims[:,0].reshape((n1,n2))
+	kel0 = prims[:,9].reshape((n1,n2))[min_r][min_th]
+	rho = prims[:,0].reshape((n1,n2))[min_r][min_th]
 	game = 1.333333
-	u = rho[min_r][min_th]**game*np.exp(kel0[min_r][min_th]*(game-1))
+	u = rho**game*kel0/(game-1)
 	return([u,t])
 
 def analytical(dumpsdir, dumpno, prims):	
